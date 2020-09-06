@@ -7,21 +7,21 @@ import (
 
 func TestNewElectricalAppliance(t *testing.T) {
 	appliance := NewAppliance(1, 10)
-	assert.Equal(t, 1, appliance.getId())
-	assert.Equal(t, 10, appliance.getPowerConsumption())
-	assert.False(t, appliance.isOn())
+	assert.Equal(t, 1, appliance.GetId())
+	assert.Equal(t, 10, appliance.GetPowerConsumption())
+	assert.False(t, appliance.IsOn())
 }
 
 func TestShouldTurnOnTheElectricalAppliance(t *testing.T) {
 	appliance := NewAppliance(1, 10)
-	appliance.turnOn()
-	assert.True(t, appliance.isOn())
+	appliance.TurnOn()
+	assert.True(t, appliance.IsOn())
 }
 
 func TestShouldTurnOFFTheElectricalAppliance(t *testing.T) {
 	appliance := NewAppliance(1, 10)
-	appliance.turnOn()
-	assert.True(t, appliance.isOn())
-	appliance.turnOff()
-	assert.False(t, appliance.isOn())
+	appliance.TurnOn()
+	assert.True(t, appliance.IsOn())
+	appliance.TurnOff()
+	assert.False(t, appliance.IsOn())
 }

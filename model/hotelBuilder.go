@@ -11,9 +11,9 @@ func NewHotelBuilder() *HotelBuilder {
 }
 
 func (hb *HotelBuilder) WithOneLightBulbAndOneACInEveryCorridor() *HotelBuilder {
-	for _, corridor := range hb.getCorridors() {
-		corridor.addAirConditioner(NewAirConditioner(1, 10))
-		corridor.addLightBulb(NewLightBulb(1, 5))
+	for _, corridor := range hb.GetCorridors() {
+		corridor.AddAirConditioner(NewAirConditioner(1, 10))
+		corridor.AddLightBulb(NewLightBulb(1, 5))
 	}
 	return hb
 }
@@ -27,20 +27,20 @@ func (hb *HotelBuilder) WithFloors(noOfFloor int) *HotelBuilder {
 	for i := 1; i <= noOfFloor; i++ {
 		floors = append(floors, NewFloor(i))
 	}
-	hb.addFloors(floors)
+	hb.AddFloors(floors)
 	return hb
 }
 
 func (hb *HotelBuilder) WithCorridors(mainCorridorPerFloor int, subCorridorPerFloor int) *HotelBuilder {
-	for _, floor := range hb.getFloors() {
+	for _, floor := range hb.GetFloors() {
 		floor.
-			addCorridors(createCorridors(MAIN, mainCorridorPerFloor), MAIN).
-			addCorridors(createCorridors(SUB, subCorridorPerFloor), SUB)
+			AddCorridors(createCorridors(MAIN, mainCorridorPerFloor), MAIN).
+			AddCorridors(createCorridors(SUB, subCorridorPerFloor), SUB)
 	}
 	return hb
 }
 
-func createCorridors(cType Type, count int) []*Corridor {
+func createCorridors(cType CorridorType, count int) []*Corridor {
 	corridors := make([]*Corridor, 0)
 	for i := 1; i <= count; i++ {
 		corridors = append(corridors, NewCorridor(cType, i))

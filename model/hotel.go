@@ -8,20 +8,20 @@ func NewHotel() *Hotel {
 	return &Hotel{}
 }
 
-func (h *Hotel) addFloors(floor []*Floor) *Hotel {
+func (h *Hotel) AddFloors(floor []*Floor) *Hotel {
 	h.floors = append(h.floors, floor...)
 	return h
 }
 
-func (h *Hotel) getFloors() []*Floor {
+func (h *Hotel) GetFloors() []*Floor {
 	return h.floors
 }
 
-func (h *Hotel) getCorridors() []*Corridor {
+func (h *Hotel) GetCorridors() []*Corridor {
 	corridors := make([]*Corridor, 0)
 	for _, floor := range h.floors {
-		corridors = append(corridors, floor.getCorridors(MAIN)...)
-		corridors = append(corridors, floor.getCorridors(SUB)...)
+		corridors = append(corridors, floor.GetCorridors(MAIN)...)
+		corridors = append(corridors, floor.GetCorridors(SUB)...)
 	}
 	return corridors
 }

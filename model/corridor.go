@@ -6,13 +6,12 @@ import (
 
 type Corridor struct {
 	id              int
-	cType           Type
+	cType           CorridorType
 	lightBulbs      []*LightBulb
 	airConditioners []*AirConditioner
 }
 
-func NewCorridor(corridorType Type, id int) *Corridor {
-
+func NewCorridor(corridorType CorridorType, id int) *Corridor {
 	lightBulbs := make([]*LightBulb, 0)
 	airConditioners := make([]*AirConditioner, 0)
 	return &Corridor{
@@ -23,35 +22,35 @@ func NewCorridor(corridorType Type, id int) *Corridor {
 	}
 }
 
-func (c *Corridor) addLightBulb(bulb *LightBulb) *Corridor {
+func (c *Corridor) AddLightBulb(bulb *LightBulb) *Corridor {
 	c.lightBulbs = append(c.lightBulbs, bulb)
 	return c
 }
 
-func (c *Corridor) addAirConditioner(ac *AirConditioner) *Corridor {
+func (c *Corridor) AddAirConditioner(ac *AirConditioner) *Corridor {
 	c.airConditioners = append(c.airConditioners, ac)
 	return c
 }
 
-func (c *Corridor) getLightBulbs() []*LightBulb {
+func (c *Corridor) GetLightBulbs() []*LightBulb {
 	return c.lightBulbs
 }
 
-func (c *Corridor) getAirConditioners() []*AirConditioner {
+func (c *Corridor) GetAirConditioners() []*AirConditioner {
 	return c.airConditioners
 }
 
-func (c *Corridor) getTypeAsString() string {
+func (c *Corridor) GetTypeAsString() string {
 	return string(c.cType)
 }
 
-func (c *Corridor) getId() int {
+func (c *Corridor) GetId() int {
 	return c.id
 }
 
-type Type string
+type CorridorType string
 
 const (
-	MAIN Type = "Main"
-	SUB  Type = "Sub"
+	MAIN CorridorType = "Main"
+	SUB  CorridorType = "Sub"
 )

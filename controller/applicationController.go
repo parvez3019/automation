@@ -16,9 +16,5 @@ func NewApplicationController(service *HotelService) *ApplicationController {
 func (app *ApplicationController) Runner(request CreateHotelRequest) {
 	hotelService := NewHotelService()
 	hotelService.CreateHotel(request)
-	fmt.Print(hotelService.PrintHotelAppliancesState())
-}
-
-func (app *ApplicationController) printHotelAppliancesState() {
-
+	fmt.Println(hotelService.GetAppliances())
 }

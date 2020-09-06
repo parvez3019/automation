@@ -1,11 +1,11 @@
 package appliances
 
 type ApplianceI interface {
-	turnOn()
-	turnOff()
-	isOn() bool
-	getId() int
-	getPowerConsumption() int
+	TurnOn()
+	TurnOff()
+	IsOn() bool
+	GetId() int
+	GetPowerConsumption() int
 }
 
 type Appliance struct {
@@ -18,23 +18,23 @@ func NewAppliance(id int, powerConsumption int) *Appliance {
 	return &Appliance{id: id, powerConsumption: powerConsumption,}
 }
 
-func (appliance *Appliance) turnOn() {
+func (appliance *Appliance) TurnOn() {
 	appliance.on = true
 }
 
-func (appliance *Appliance) turnOff() {
+func (appliance *Appliance) TurnOff() {
 	appliance.on = false
 }
 
-func (appliance *Appliance) isOn() bool {
+func (appliance *Appliance) IsOn() bool {
 	return appliance.on
 }
 
-func (appliance *Appliance) getId() int {
+func (appliance *Appliance) GetId() int {
 	return appliance.id
 }
 
-func (appliance *Appliance) getPowerConsumption() int {
+func (appliance *Appliance) GetPowerConsumption() int {
 	return appliance.powerConsumption
 }
 

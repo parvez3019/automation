@@ -11,11 +11,11 @@ func TestShouldReturnNewFloorWithLevel1(t *testing.T) {
 
 func TestShouldAddOneMainCorridorAndTwoSubCorridor(t *testing.T) {
 	floor := NewFloor(1).
-		addCorridors([]*Corridor{NewCorridor(MAIN, 1)}, MAIN).
-		addCorridors([]*Corridor{NewCorridor(SUB, 1), NewCorridor(SUB, 2)}, SUB)
-	assert.Equal(t, 1, len(floor.getCorridors(MAIN)))
-	assert.Equal(t, 1, floor.getCorridors(MAIN)[0].getId())
-	assert.Equal(t, 2, len(floor.getCorridors(SUB)))
-	assert.Equal(t, 1, floor.getCorridors(SUB)[0].getId())
-	assert.Equal(t, 2, floor.getCorridors(SUB)[1].getId())
+		AddCorridors([]*Corridor{NewCorridor(MAIN, 1)}, MAIN).
+		AddCorridors([]*Corridor{NewCorridor(SUB, 1), NewCorridor(SUB, 2)}, SUB)
+	assert.Equal(t, 1, len(floor.GetCorridors(MAIN)))
+	assert.Equal(t, 1, floor.GetCorridors(MAIN)[0].GetId())
+	assert.Equal(t, 2, len(floor.GetCorridors(SUB)))
+	assert.Equal(t, 1, floor.GetCorridors(SUB)[0].GetId())
+	assert.Equal(t, 2, floor.GetCorridors(SUB)[1].GetId())
 }

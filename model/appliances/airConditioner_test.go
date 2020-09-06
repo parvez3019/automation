@@ -7,7 +7,7 @@ import (
 
 func TestNewAirConditioner(t *testing.T) {
 	ac := NewAirConditioner(1, 10)
-	assert.Equal(t, 1, ac.getId())
-	assert.Equal(t, 10, ac.getPowerConsumption())
-	assert.False(t, ac.isOn())
+	assert.Equal(t, 1, ac.GetId())
+	assert.Equal(t, 10, ac.GetPowerConsumption())
+	assert.False(t, ac.IsOn())
 }

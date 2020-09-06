@@ -14,14 +14,17 @@ func (f *Floor) GetLevel() int {
 	return f.level
 }
 
-func (f *Floor) getCorridors(cType Type) []*Corridor {
+func (f *Floor) GetCorridors(cType CorridorType) []*Corridor {
 	if cType == MAIN {
 		return f.mainCorridors
 	}
-	return f.subCorridors
+	if cType == SUB {
+		return f.subCorridors
+	}
+	return []*Corridor{}
 }
 
-func (f *Floor) addCorridors(c []*Corridor, cType Type) *Floor {
+func (f *Floor) AddCorridors(c []*Corridor, cType CorridorType) *Floor {
 	if cType == MAIN {
 		f.mainCorridors = append(f.mainCorridors, c...)
 	}

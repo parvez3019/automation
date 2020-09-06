@@ -1,6 +1,8 @@
 package service
 
-import . "HotelAutomation/model"
+import (
+	. "HotelAutomation/model"
+)
 
 type HotelService struct {
 	hotel *Hotel
@@ -18,12 +20,6 @@ func (hotelService *HotelService) CreateHotel(request CreateHotelRequest) {
 		Build()
 }
 
-func (hotelService *HotelService) PrintHotelAppliancesState() string {
-	return "Hello"
-}
-
-type CreateHotelRequest struct {
-	NumberOfFloors       int
-	MainCorridorPerFloor int
-	SubCorridorPerFloor  int
+func (hotelService *HotelService) GetAppliances() []ApplianceInfo {
+	return mapToApplianceStateDto(hotelService.hotel.GetFloors())
 }
