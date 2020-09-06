@@ -1,10 +1,17 @@
 package main
 
-import "fmt"
 
 func main() {
-	fmt.Print("hello")
+
+	//Hotel -> Floor -> Corr -> appliances.
+	//ElectricityController -> turn on / off appliance in respestive corridor + current power consumption of hotel + max capacity + logic
+	//MotionController raise{Floor, corridor}
+
+
+//	hotel -> ElectricityController ->
+//	new ElectricityController(*hotel)
+
+// Appliance id, floor number, Main/Sub, number
+
+
 }
-
-
-
