@@ -1,14 +1,30 @@
 package model
 
-type HotelBuilder struct{}
+import . "HotelAutomation/model/appliances"
 
-func NewHotelBuilder() *HotelBuilder {
-	return &HotelBuilder{}
+type HotelBuilder struct {
+	*Hotel
 }
 
-func (hb *HotelBuilder) BuildHotel(request CreateHotelRequest) *Hotel {
-	return NewHotel().
-		addFloors(buildFloorsWithCorridors(request))
+func NewHotelBuilder() *HotelBuilder {
+	return &HotelBuilder{NewHotel()}
+}
+
+func (hb *HotelBuilder) WithFloorsAndCorridors(request CreateHotelRequest) *HotelBuilder {
+	hb.addFloors(buildFloorsWithCorridors(request))
+	return hb
+}
+
+func (hb *HotelBuilder) WithOneLightBulbAndOneACInEveryCorridor() *HotelBuilder {
+	for _, corridor := range hb.getCorridors() {
+		corridor.addAirConditioner(NewAirConditioner(1, 10))
+		corridor.addLightBulb(NewLightBulb(1, 5))
+	}
+	return hb
+}
+
+func (hb *HotelBuilder) Build() *Hotel {
+	return hb.Hotel
 }
 
 func buildFloorsWithCorridors(request CreateHotelRequest) []*Floor {

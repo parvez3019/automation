@@ -17,3 +17,11 @@ func TestShouldTurnOnTheElectricalAppliance(t *testing.T) {
 	appliance.turnOn()
 	assert.True(t, appliance.isOn())
 }
+
+func TestShouldTurnOFFTheElectricalAppliance(t *testing.T) {
+	appliance := NewAppliance(1, 10)
+	appliance.turnOn()
+	assert.True(t, appliance.isOn())
+	appliance.turnOff()
+	assert.False(t, appliance.isOn())
+}
