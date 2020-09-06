@@ -6,24 +6,16 @@ import (
 )
 
 func TestShouldBuildHotelNoFloors(t *testing.T) {
-	createHotelRequest := CreateHotelRequest{
-		NumberOfFloors: 0,
-	}
 	hotel := NewHotelBuilder().
-		WithFloorsAndCorridors(createHotelRequest).
 		Build()
 	floors := hotel.getFloors()
 	assert.Equal(t, 0, len(floors))
 }
 
 func TestShouldBuildHotelWith2FloorsAnd1Main2SubCorridorAtEachFloor(t *testing.T) {
-	createHotelRequest := CreateHotelRequest{
-		NumberOfFloors:       2,
-		MainCorridorPerFloor: 1,
-		SubCorridorPerFloor:  2,
-	}
 	hotel := NewHotelBuilder().
-		WithFloorsAndCorridors(createHotelRequest).
+		WithFloors(2).
+		WithCorridors(1,2).
 		Build()
 
 	assert.Equal(t, 2, len(hotel.getFloors()))
@@ -37,9 +29,9 @@ func TestShouldBuildHotelWith2FloorsAnd1Main2SubCorridorAtEachFloor(t *testing.T
 
 
 func TestShouldBuildHotelWithoutLightBulbAndACInAnyCorridor(t *testing.T) {
-	createHotelRequest := CreateHotelRequest{NumberOfFloors: 2, MainCorridorPerFloor: 1, SubCorridorPerFloor: 2}
 	hotel := NewHotelBuilder().
-		WithFloorsAndCorridors(createHotelRequest).
+		WithFloors(2).
+		WithCorridors(1,2).
 		WithOneLightBulbAndOneACInEveryCorridor().
 		Build()
 
@@ -52,9 +44,9 @@ func TestShouldBuildHotelWithoutLightBulbAndACInAnyCorridor(t *testing.T) {
 }
 
 func TestShouldBuildHotelWithLightBulbAndACInEachCorridor(t *testing.T) {
-	createHotelRequest := CreateHotelRequest{NumberOfFloors: 2, MainCorridorPerFloor: 1, SubCorridorPerFloor: 2}
 	hotel := NewHotelBuilder().
-		WithFloorsAndCorridors(createHotelRequest).
+		WithFloors(2).
+		WithCorridors(1,2).
 		WithOneLightBulbAndOneACInEveryCorridor().
 		Build()
 
