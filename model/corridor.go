@@ -11,13 +11,13 @@ type Corridor struct {
 	airConditioners []*AirConditioner
 }
 
-func NewCorridor(corridorType Type, number int) *Corridor {
+func NewCorridor(corridorType Type, id int) *Corridor {
 
 	lightBulbs := make([]*LightBulb, 0)
 	airConditioners := make([]*AirConditioner, 0)
 	return &Corridor{
 		cType:           corridorType,
-		id:              number,
+		id:              id,
 		lightBulbs:      lightBulbs,
 		airConditioners: airConditioners,
 	}
@@ -43,6 +43,10 @@ func (c *Corridor) getAirConditioners() []*AirConditioner {
 
 func (c *Corridor) getTypeAsString() string {
 	return string(c.cType)
+}
+
+func (c *Corridor) getId() int {
+	return c.id
 }
 
 type Type string

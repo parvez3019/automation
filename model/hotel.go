@@ -1,19 +1,19 @@
 package model
 
-type hotel struct {
-	floors []*floor
+type Hotel struct {
+	floors []*Floor
 }
 
-func NewHotel() *hotel {
-	return &hotel{}
+func NewHotel() *Hotel {
+	return &Hotel{}
 }
 
-func (h *hotel) addFloor(floor *floor) *hotel{
-	h.floors = append(h.floors, floor)
+func (h *Hotel) addFloors(floor []*Floor) *Hotel {
+	h.floors = append(h.floors, floor...)
 	return h
 }
 
-func(h *hotel) getFloors() []*floor {
+func(h *Hotel) getFloors() []*Floor {
 	return h.floors
 }
 
