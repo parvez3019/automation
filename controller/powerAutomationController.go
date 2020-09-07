@@ -29,10 +29,6 @@ func (c *PowerAutomationController) Init(request CreateHotelRequest) {
 	c.motionController.addObserver(c.powerController)
 }
 
-func (c *PowerAutomationController) ToggleAppliance(request ToggleApplianceRequest) error {
-	return c.powerController.Update(request)
-}
-
 func (c *PowerAutomationController) MovementDetected(atLocation ApplianceLocation, movement bool) {
 	turnOnLightAtLocationRequest := ToggleApplianceRequest{ApplianceType: LIGHT, SwitchOn: movement, Location: atLocation}
 	err := c.motionController.NotifyAll(turnOnLightAtLocationRequest)
@@ -42,15 +38,19 @@ func (c *PowerAutomationController) MovementDetected(atLocation ApplianceLocatio
 	c.verifyTotalPowerConsumptionAtFloor(atLocation)
 }
 
+func (c *PowerAutomationController) toggleAppliance(request ToggleApplianceRequest) error {
+	return c.powerController.Update(request)
+}
+
 func (c *PowerAutomationController) verifyTotalPowerConsumptionAtFloor(atLocation ApplianceLocation) {
-	if c.TotalPowerConsumptionAtFloorExceeded(atLocation.FloorNumber) {
+	if c.totalPowerConsumptionAtFloorExceeded(atLocation.FloorNumber) {
 		c.toggleSubCorridorAC(atLocation, false)
 		return
 	}
 	c.toggleSubCorridorAC(atLocation, true)
 }
 
-func (c *PowerAutomationController) TotalPowerConsumptionAtFloorExceeded(floorNumber int) bool {
+func (c *PowerAutomationController) totalPowerConsumptionAtFloorExceeded(floorNumber int) bool {
 	totalConsumption := c.powerController.TotalPowerConsumptionAtFloor(floorNumber)
 	totalMainCorridors := c.hotelService.GetNumberOfCorridors(MAIN)
 	totalSubCorridors := c.hotelService.GetNumberOfCorridors(SUB)
@@ -58,7 +58,7 @@ func (c *PowerAutomationController) TotalPowerConsumptionAtFloorExceeded(floorNu
 }
 
 func (c *PowerAutomationController) toggleSubCorridorAC(atLocation ApplianceLocation, switchOn bool) {
-	_ = c.ToggleAppliance(ToggleApplianceRequest{
+	_ = c.toggleAppliance(ToggleApplianceRequest{
 		ApplianceType: AC,
 		SwitchOn:      switchOn,
 		Location:      atLocation,
