@@ -18,4 +18,3 @@ func TestShouldCreateACorridorWithTypeSubAndZeroLightBulbsAndACs(t *testing.T) {
 	assert.Equal(t, 0, len(corridor.GetLightBulbs()))
 	assert.Equal(t, 0, len(corridor.GetAirConditioners()))
 }
-

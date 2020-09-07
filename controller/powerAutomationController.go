@@ -54,7 +54,7 @@ func (c *PowerAutomationController) totalPowerConsumptionAtFloorExceeded(floorNu
 	totalConsumption := c.powerController.TotalPowerConsumptionAtFloor(floorNumber)
 	totalMainCorridors := c.hotelService.GetNumberOfCorridors(MAIN)
 	totalSubCorridors := c.hotelService.GetNumberOfCorridors(SUB)
-	return totalConsumption >= (totalMainCorridors * 15) + (totalSubCorridors * 10)
+	return totalConsumption >= (totalMainCorridors*15)+(totalSubCorridors*10)
 }
 
 func (c *PowerAutomationController) toggleSubCorridorAC(atLocation ApplianceLocation, switchOn bool) {

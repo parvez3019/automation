@@ -6,7 +6,7 @@ import (
 )
 
 func TestShouldReturnHotelWithNoFloors(t *testing.T) {
-	assert.Equal(t,0, len(NewHotel().GetFloors()))
+	assert.Equal(t, 0, len(NewHotel().GetFloors()))
 }
 
 func TestShouldTwoAddedFloorsAddedToHotel(t *testing.T) {

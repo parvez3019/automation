@@ -1,6 +1,5 @@
 package appliances
 
-
 type LightBulb struct {
 	*Appliance
 }

@@ -1,6 +1,8 @@
 package model
 
-import . "HotelAutomation/model/appliances"
+import (
+	. "HotelAutomation/model/appliances"
+)
 
 type HotelBuilder struct {
 	*Hotel

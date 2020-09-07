@@ -1,9 +1,9 @@
 package controller
 
 import (
+	mock "HotelAutomation/_mocks"
 	. "HotelAutomation/service"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 	"testing"
 )
 
@@ -17,9 +17,9 @@ func TestShouldAddObservers(t *testing.T) {
 
 func TestShouldNotifyAllObservers(t *testing.T) {
 	observable := Observable{}
-	powerController1 := new(MockPowerController)
-	powerController2 := new(MockPowerController)
-	powerController3 := new(MockPowerController)
+	powerController1 := &mock.ObserverI{}
+	powerController2 := &mock.ObserverI{}
+	powerController3 := &mock.ObserverI{}
 
 	powerController1.On("Update", ToggleApplianceRequest{}).Return(nil)
 	powerController2.On("Update", ToggleApplianceRequest{}).Return(nil)
@@ -35,22 +35,4 @@ func TestShouldNotifyAllObservers(t *testing.T) {
 	assert.Equal(t, 1, len(powerController1.Calls))
 	assert.Equal(t, 1, len(powerController2.Calls))
 	assert.Equal(t, 1, len(powerController3.Calls))
-
-}
-
-type MockPowerController struct {
-	mock.Mock
-}
-
-func (_m *MockPowerController) Update(request ToggleApplianceRequest) error {
-	ret := _m.Called(request)
-
-	var r0 error
-	if rf, ok := ret.Get(0).(func(ToggleApplianceRequest) error); ok {
-		r0 = rf(request)
-	} else {
-		r0 = ret.Error(0)
-	}
-
-	return r0
 }

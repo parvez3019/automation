@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/magiconair/properties/assert"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -15,11 +15,11 @@ func TestShouldBuildHotelNoFloors(t *testing.T) {
 func TestShouldBuildHotelWith2FloorsAnd1Main2SubCorridorAtEachFloor(t *testing.T) {
 	hotel := NewHotelBuilder().
 		WithFloors(2).
-		WithCorridors(1,2).
+		WithCorridors(1, 2).
 		Build()
 
 	assert.Equal(t, 2, len(hotel.GetFloors()))
-	assert.Equal(t, 6, len(hotel.GetCorridors()))
+	assert.Equal(t, 6, len(hotel.GetAllCorridors()))
 	for i, f := range hotel.GetFloors() {
 		assert.Equal(t, i+1, f.GetLevel())
 		assert.Equal(t, 1, len(f.GetCorridors(MAIN)))
@@ -27,16 +27,15 @@ func TestShouldBuildHotelWith2FloorsAnd1Main2SubCorridorAtEachFloor(t *testing.T
 	}
 }
 
-
 func TestShouldBuildHotelWithoutLightBulbAndACInAnyCorridor(t *testing.T) {
 	hotel := NewHotelBuilder().
 		WithFloors(2).
-		WithCorridors(1,2).
+		WithCorridors(1, 2).
 		WithOneLightBulbAndOneACInEveryCorridor().
 		Build()
 
-	assert.Equal(t, 6, len(hotel.GetCorridors()))
-	for _, c := range hotel.GetCorridors() {
+	assert.Equal(t, 6, len(hotel.GetAllCorridors()))
+	for _, c := range hotel.GetAllCorridors() {
 		assert.Equal(t, 1, len(c.GetLightBulbs()))
 		assert.Equal(t, 1, len(c.GetAirConditioners()))
 	}
@@ -46,12 +45,12 @@ func TestShouldBuildHotelWithoutLightBulbAndACInAnyCorridor(t *testing.T) {
 func TestShouldBuildHotelWithLightBulbAndACInEachCorridor(t *testing.T) {
 	hotel := NewHotelBuilder().
 		WithFloors(2).
-		WithCorridors(1,2).
+		WithCorridors(1, 2).
 		WithOneLightBulbAndOneACInEveryCorridor().
 		Build()
 
-	assert.Equal(t, 6, len(hotel.GetCorridors()))
-	for _, c := range hotel.GetCorridors() {
+	assert.Equal(t, 6, len(hotel.GetAllCorridors()))
+	for _, c := range hotel.GetAllCorridors() {
 		assert.Equal(t, 1, len(c.GetLightBulbs()))
 		assert.Equal(t, 1, len(c.GetAirConditioners()))
 	}
