@@ -7,84 +7,88 @@ import (
 	"testing"
 )
 
+var lightBulb *LightBulb
+var airConditioner *AirConditioner
+var mainCorridor *Corridor
+var subCorridor *Corridor
+
+func init() {
+	lightBulb = NewLightBulb(1, 5)
+	airConditioner = NewAirConditioner(1, 10)
+	mainCorridor = NewCorridor(MAIN, 1).
+		AddLightBulb(lightBulb).
+		AddAirConditioner(airConditioner)
+	subCorridor = NewCorridor(SUB, 1).
+		AddLightBulb(lightBulb).
+		AddAirConditioner(airConditioner)
+}
+
 func TestShouldReturnEmptyListOfApplianceInCaseOfNoFloors(t *testing.T) {
-	assert.Equal(t, []ApplianceInfo{}, mapToApplianceStateDto([]*Floor{}))
+	assert.Equal(t, []Appliances{}, mapToAppliances([]*Floor{}))
 }
 
 func TestShouldReturnListOfApplianceFromMainCorridorOnlyInCaseOfNoSubCorridors(t *testing.T) {
-	mainCorridor := NewCorridor(MAIN, 1).
-		AddLightBulb(NewLightBulb(1, 5)).
-		AddAirConditioner(NewAirConditioner(1, 10))
 	floor := NewFloor(1).
 		AddCorridors([]*Corridor{mainCorridor}, MAIN)
 
-	expectedApplianceInfo := []ApplianceInfo{
+	expectedApplianceInfo := []AppliancesInfo{
 		{
 			Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5,
-			Location: ApplianceLocation{floorNumber: 1, corridorType: "Main", corridorNumber: 1},
+			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
 		},
 		{
 			Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10,
-			Location: ApplianceLocation{floorNumber: 1, corridorType: "Main", corridorNumber: 1},
+			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
 		},
 	}
 
-	applianceInfos := mapToApplianceStateDto([]*Floor{floor})
-	assert.ElementsMatch(t, expectedApplianceInfo, applianceInfos)
+	appliances := mapToAppliances([]*Floor{floor})
+	assert.ElementsMatch(t, expectedApplianceInfo, mapApplianceToApplianceInfo(appliances))
 }
 
 func TestShouldReturnListOfApplianceFromSubCorridorOnlyInCaseOfNoMainCorridors(t *testing.T) {
-	subCorridor := NewCorridor(SUB, 1).
-		AddLightBulb(NewLightBulb(1, 5)).
-		AddAirConditioner(NewAirConditioner(1, 10))
 	floor := NewFloor(1).
 		AddCorridors([]*Corridor{subCorridor}, SUB)
 
-	expectedApplianceInfo := []ApplianceInfo{
+	expectedApplianceInfo := []AppliancesInfo{
 		{
 			Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5,
-			Location: ApplianceLocation{floorNumber: 1, corridorType: "Sub", corridorNumber: 1},
+			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1},
 		},
 		{
 			Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10,
-			Location: ApplianceLocation{floorNumber: 1, corridorType: "Sub", corridorNumber: 1},
+			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1},
 		},
 	}
 
-	applianceInfos := mapToApplianceStateDto([]*Floor{floor})
-	assert.ElementsMatch(t, expectedApplianceInfo, applianceInfos)
+	appliances := mapToAppliances([]*Floor{floor})
+	assert.ElementsMatch(t, expectedApplianceInfo, mapApplianceToApplianceInfo(appliances))
 }
 
 func TestShouldReturnListOfApplianceFromAllCorridor(t *testing.T) {
-	mainCorridor := NewCorridor(MAIN, 1).
-		AddLightBulb(NewLightBulb(1, 5)).
-		AddAirConditioner(NewAirConditioner(1, 10))
-	subCorridor := NewCorridor(SUB, 1).
-		AddLightBulb(NewLightBulb(1, 5)).
-		AddAirConditioner(NewAirConditioner(1, 10))
 	floor := NewFloor(1).
 		AddCorridors([]*Corridor{mainCorridor}, SUB).
 		AddCorridors([]*Corridor{subCorridor}, MAIN)
 
-	expectedApplianceInfo := []ApplianceInfo{
+	expectedApplianceInfo := []AppliancesInfo{
 		{
 			Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5,
-			Location: ApplianceLocation{floorNumber: 1, corridorType: "Main", corridorNumber: 1},
+			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
 		},
 		{
 			Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10,
-			Location: ApplianceLocation{floorNumber: 1, corridorType: "Main", corridorNumber: 1},
+			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
 		},
 		{
 			Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5,
-			Location: ApplianceLocation{floorNumber: 1, corridorType: "Sub", corridorNumber: 1},
+			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1},
 		},
 		{
 			Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10,
-			Location: ApplianceLocation{floorNumber: 1, corridorType: "Sub", corridorNumber: 1},
+			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1},
 		},
 	}
 
-	applianceInfos := mapToApplianceStateDto([]*Floor{floor})
-	assert.ElementsMatch(t, expectedApplianceInfo, applianceInfos)
+	appliances := mapToAppliances([]*Floor{floor})
+	assert.ElementsMatch(t, expectedApplianceInfo, mapApplianceToApplianceInfo(appliances))
 }

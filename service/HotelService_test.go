@@ -10,20 +10,20 @@ func TestShouldReturnApplianceInfo(t *testing.T) {
 	hotelService := NewHotelService()
 	hotelService.CreateHotel(request)
 
-	expectedAppliances := []ApplianceInfo{
-		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: ApplianceLocation{floorNumber: 1, corridorType: "Main", corridorNumber: 1}},
-		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: ApplianceLocation{floorNumber: 1, corridorType: "Sub", corridorNumber: 1}},
-		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: ApplianceLocation{floorNumber: 1, corridorType: "Sub", corridorNumber: 2}},
-		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: ApplianceLocation{floorNumber: 2, corridorType: "Main", corridorNumber: 1}},
-		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: ApplianceLocation{floorNumber: 2, corridorType: "Sub", corridorNumber: 1}},
-		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: ApplianceLocation{floorNumber: 2, corridorType: "Sub", corridorNumber: 2}},
-		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: ApplianceLocation{floorNumber: 1, corridorType: "Main", corridorNumber: 1}},
-		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: ApplianceLocation{floorNumber: 1, corridorType: "Sub", corridorNumber: 1}},
-		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: ApplianceLocation{floorNumber: 1, corridorType: "Sub", corridorNumber: 2}},
-		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: ApplianceLocation{floorNumber: 2, corridorType: "Main", corridorNumber: 1}},
-		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: ApplianceLocation{floorNumber: 2, corridorType: "Sub", corridorNumber: 1}},
-		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: ApplianceLocation{floorNumber: 2, corridorType: "Sub", corridorNumber: 2}},
+	expectedAppliances := []AppliancesInfo{
+		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1}},
+		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1}},
+		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 2}},
+		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: ApplianceLocation{FloorNumber: 2, CorridorType: "Main", CorridorNumber: 1}},
+		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: ApplianceLocation{FloorNumber: 2, CorridorType: "Sub", CorridorNumber: 1}},
+		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: ApplianceLocation{FloorNumber: 2, CorridorType: "Sub", CorridorNumber: 2}},
+		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1}},
+		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1}},
+		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 2}},
+		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: ApplianceLocation{FloorNumber: 2, CorridorType: "Main", CorridorNumber: 1}},
+		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: ApplianceLocation{FloorNumber: 2, CorridorType: "Sub", CorridorNumber: 1}},
+		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: ApplianceLocation{FloorNumber: 2, CorridorType: "Sub", CorridorNumber: 2}},
 	}
 
-	assert.ElementsMatch(t, expectedAppliances, hotelService.GetAppliances())
+	assert.ElementsMatch(t, expectedAppliances, hotelService.GetAppliancesInfo())
 }

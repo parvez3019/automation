@@ -2,19 +2,23 @@ package controller
 
 import (
 	. "HotelAutomation/service"
-	"fmt"
 )
 
-type ApplicationController struct {
-	hotelService *HotelService
+type PowerAutomationController struct {
+	hotelService    *HotelService
+	powerController *PowerController
 }
 
-func NewApplicationController(service *HotelService) *ApplicationController {
-	return &ApplicationController{hotelService: service}
+func NewApplicationController(hotelService *HotelService) *PowerAutomationController {
+	powerController := NewPowerController(hotelService)
+	return &PowerAutomationController{hotelService: hotelService, powerController: powerController}
 }
 
-func (app *ApplicationController) Runner(request CreateHotelRequest) {
-	hotelService := NewHotelService()
-	hotelService.CreateHotel(request)
-	fmt.Println(hotelService.GetAppliances())
+func (c *PowerAutomationController) Init(request CreateHotelRequest) {
+	c.hotelService.CreateHotel(request)
+	c.powerController.RegisterDevices()
+}
+
+func (c *PowerAutomationController) ToggleAppliance(request ToggleApplianceRequest) error {
+	return c.powerController.ToggleApplianceState(request)
 }

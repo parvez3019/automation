@@ -6,5 +6,5 @@ type LightBulb struct {
 }
 
 func NewLightBulb(id, powerConsumption int) *LightBulb {
-	return &LightBulb{NewAppliance(id, powerConsumption)}
+	return &LightBulb{NewAppliance(id, powerConsumption, LIGHT)}
 }

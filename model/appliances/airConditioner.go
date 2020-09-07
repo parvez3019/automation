@@ -5,5 +5,5 @@ type AirConditioner struct {
 }
 
 func NewAirConditioner(id int, powerConsumption int) *AirConditioner {
-	return &AirConditioner{NewAppliance(id, powerConsumption)}
+	return &AirConditioner{NewAppliance(id, powerConsumption, AC)}
 }

@@ -20,6 +20,10 @@ func (hotelService *HotelService) CreateHotel(request CreateHotelRequest) {
 		Build()
 }
 
-func (hotelService *HotelService) GetAppliances() []ApplianceInfo {
-	return mapToApplianceStateDto(hotelService.hotel.GetFloors())
+func (hotelService *HotelService) GetAppliancesInfo() []AppliancesInfo {
+	return mapApplianceToApplianceInfo(hotelService.GetAppliances())
+}
+
+func (hotelService *HotelService) GetAppliances() []Appliances {
+	return mapToAppliances(hotelService.hotel.GetFloors())
 }

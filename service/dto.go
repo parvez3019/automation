@@ -1,17 +1,24 @@
 package service
 
-type ApplianceInfo struct {
+import . "HotelAutomation/model/appliances"
+
+type Appliances struct {
+	Location  ApplianceLocation
+	Appliance ApplianceStateI
+}
+
+type AppliancesInfo struct {
 	Name             string
 	Number           int
 	IsSwitchedOd     bool
 	PowerConsumption int
-	Location ApplianceLocation
+	Location         ApplianceLocation
 }
 
 type ApplianceLocation struct {
-	floorNumber    int
-	corridorType   string
-	corridorNumber int
+	FloorNumber    int
+	CorridorType   string
+	CorridorNumber int
 }
 
 type CreateHotelRequest struct {
@@ -20,9 +27,9 @@ type CreateHotelRequest struct {
 	SubCorridorPerFloor  int
 }
 
-type ApplianceType string
-
-const (
-	LIGHT ApplianceType = "Light"
-	AC    ApplianceType = "AC"
-)
+type ToggleApplianceRequest struct {
+	ApplianceType   ApplianceType
+	ApplianceNumber int
+	SwitchOn        bool
+	Location        ApplianceLocation
+}

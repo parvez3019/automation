@@ -5,8 +5,22 @@ import (
 	. "HotelAutomation/model/appliances"
 )
 
-func mapToApplianceStateDto(floors []*Floor) []ApplianceInfo {
-	applianceStates := make([]ApplianceInfo, 0)
+func mapApplianceToApplianceInfo(appliances []Appliances) []AppliancesInfo {
+	appliancesInfo := make([]AppliancesInfo, 0)
+	for _, a := range appliances {
+		appliancesInfo = append(appliancesInfo, AppliancesInfo{
+			Name:             a.Appliance.GetType(),
+			Number:           a.Appliance.GetId(),
+			IsSwitchedOd:     a.Appliance.IsOn(),
+			PowerConsumption: a.Appliance.GetPowerConsumption(),
+			Location:         a.Location,
+		})
+	}
+	return appliancesInfo
+}
+
+func mapToAppliances(floors []*Floor) []Appliances {
+	applianceStates := make([]Appliances, 0)
 	for _, floor := range floors {
 		applianceStates = append(applianceStates, mapCorridorLocation(floor, MAIN)...)
 		applianceStates = append(applianceStates, mapCorridorLocation(floor, SUB)...)
@@ -14,8 +28,8 @@ func mapToApplianceStateDto(floors []*Floor) []ApplianceInfo {
 	return applianceStates
 }
 
-func mapCorridorLocation(floor *Floor, corridorType CorridorType) []ApplianceInfo {
-	applianceStates := make([]ApplianceInfo, 0)
+func mapCorridorLocation(floor *Floor, corridorType CorridorType) []Appliances {
+	applianceStates := make([]Appliances, 0)
 	for _, corridor := range floor.GetCorridors(corridorType) {
 		applianceLocation := getApplianceLocation(floor, corridor)
 		applianceStates = mapLightBulb(corridor, applianceStates, applianceLocation)
@@ -24,34 +38,31 @@ func mapCorridorLocation(floor *Floor, corridorType CorridorType) []ApplianceInf
 	return applianceStates
 }
 
-func mapAC(corridor *Corridor, applianceStates []ApplianceInfo, applianceLocation ApplianceLocation) []ApplianceInfo {
+func mapAC(corridor *Corridor, applianceStates []Appliances, applianceLocation ApplianceLocation) []Appliances {
 	for _, ac := range corridor.GetAirConditioners() {
-		applianceStates = append(applianceStates, mapToApplianceState(AC, ac, applianceLocation))
+		applianceStates = append(applianceStates, mapToApplianceState(ac, applianceLocation))
 	}
 	return applianceStates
 }
 
-func mapLightBulb(corridor *Corridor, applianceStates []ApplianceInfo, applianceLocation ApplianceLocation) []ApplianceInfo {
+func mapLightBulb(corridor *Corridor, applianceStates []Appliances, applianceLocation ApplianceLocation) []Appliances {
 	for _, bulb := range corridor.GetLightBulbs() {
-		applianceStates = append(applianceStates, mapToApplianceState(LIGHT, bulb, applianceLocation))
+		applianceStates = append(applianceStates, mapToApplianceState(bulb, applianceLocation))
 	}
 	return applianceStates
 }
 
 func getApplianceLocation(floor *Floor, corridor *Corridor) ApplianceLocation {
 	return ApplianceLocation{
-		floorNumber:    floor.GetLevel(),
-		corridorType:   corridor.GetTypeAsString(),
-		corridorNumber: corridor.GetId(),
+		FloorNumber:    floor.GetLevel(),
+		CorridorType:   corridor.GetTypeAsString(),
+		CorridorNumber: corridor.GetId(),
 	}
 }
 
-func mapToApplianceState(applianceType ApplianceType, appliance ApplianceI, location ApplianceLocation) ApplianceInfo {
-	return ApplianceInfo{
-		Name:             string(applianceType),
-		Number:           appliance.GetId(),
-		IsSwitchedOd:     appliance.IsOn(),
-		PowerConsumption: appliance.GetPowerConsumption(),
-		Location:         location,
+func mapToApplianceState(appliance ApplianceStateI, location ApplianceLocation) Appliances {
+	return Appliances{
+		Location:  location,
+		Appliance: appliance,
 	}
 }
