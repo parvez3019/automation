@@ -27,3 +27,7 @@ func (hotelService *HotelService) GetAppliancesInfo() []AppliancesInfo {
 func (hotelService *HotelService) GetAppliances() []Appliances {
 	return mapToAppliances(hotelService.hotel.GetFloors())
 }
+
+func (hotelService *HotelService) GetNumberOfCorridors(corridorType CorridorType) int {
+	return len(hotelService.hotel.GetCorridors(corridorType))
+}

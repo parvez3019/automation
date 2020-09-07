@@ -29,7 +29,6 @@ type CreateHotelRequest struct {
 
 type ToggleApplianceRequest struct {
 	ApplianceType   ApplianceType
-	ApplianceNumber int
 	SwitchOn        bool
 	Location        ApplianceLocation
 }

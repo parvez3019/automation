@@ -17,11 +17,14 @@ func (h *Hotel) GetFloors() []*Floor {
 	return h.floors
 }
 
-func (h *Hotel) GetCorridors() []*Corridor {
+func (h *Hotel) GetCorridors(corridorType CorridorType) []*Corridor {
 	corridors := make([]*Corridor, 0)
 	for _, floor := range h.floors {
-		corridors = append(corridors, floor.GetCorridors(MAIN)...)
-		corridors = append(corridors, floor.GetCorridors(SUB)...)
+		corridors = append(corridors, floor.GetCorridors(corridorType)...)
 	}
 	return corridors
+}
+
+func (h *Hotel) GetAllCorridors() []*Corridor {
+	return append(h.GetCorridors(MAIN), h.GetCorridors(SUB)...)
 }
