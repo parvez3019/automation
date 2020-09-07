@@ -14,8 +14,8 @@ func NewHotelBuilder() *HotelBuilder {
 
 func (hb *HotelBuilder) WithOneLightBulbAndOneACInEveryCorridor() *HotelBuilder {
 	for _, corridor := range hb.GetAllCorridors() {
-		corridor.AddAirConditioner(NewAirConditioner(1, 10))
-		corridor.AddLightBulb(NewLightBulb(1, 5))
+		corridor.AddAirConditioner(NewAirConditioner(1, AcPowerConsumptionUnit))
+		corridor.AddLightBulb(NewLightBulb(1, LightBulbPowerConsumptionUnit))
 	}
 	return hb
 }
@@ -49,3 +49,6 @@ func createCorridors(cType CorridorType, count int) []*Corridor {
 	}
 	return corridors
 }
+
+const AcPowerConsumptionUnit = 10
+const LightBulbPowerConsumptionUnit = 5

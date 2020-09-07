@@ -8,6 +8,13 @@ type HotelService struct {
 	hotel *Hotel
 }
 
+type HotelServiceI interface {
+	CreateHotel(request CreateHotelRequest)
+	GetAppliancesInfo() []AppliancesInfo
+	GetAppliances() []Appliances
+	GetNumberOfCorridors(corridorType CorridorType) int
+}
+
 func NewHotelService() *HotelService {
 	return &HotelService{}
 }

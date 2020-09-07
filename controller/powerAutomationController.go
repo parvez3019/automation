@@ -8,18 +8,20 @@ import (
 )
 
 type PowerAutomationController struct {
-	hotelService     *HotelService
-	powerController  *PowerControllerService
+	hotelService     HotelServiceI
+	powerController  PowerControllerServiceI
 	motionController *MotionController
 }
 
-func NewPowerAutomationController(hotelService *HotelService) *PowerAutomationController {
-	powerController := NewPowerControllerService(hotelService)
-	motionController := NewMotionController()
+func NewPowerAutomationController(
+	hService HotelServiceI,
+	pController PowerControllerServiceI,
+	mController *MotionController,
+) *PowerAutomationController {
 	return &PowerAutomationController{
-		hotelService:     hotelService,
-		powerController:  powerController,
-		motionController: motionController,
+		hotelService:     hService,
+		powerController:  pController,
+		motionController: mController,
 	}
 }
 
@@ -27,6 +29,7 @@ func (c *PowerAutomationController) Init(request CreateHotelRequest) {
 	c.hotelService.CreateHotel(request)
 	c.powerController.RegisterDevices()
 	c.motionController.addObserver(c.powerController)
+	//fmt.Println(c.hotelService.GetAppliancesInfo())
 }
 
 func (c *PowerAutomationController) MovementDetected(atLocation ApplianceLocation, movement bool) {
@@ -54,7 +57,9 @@ func (c *PowerAutomationController) totalPowerConsumptionAtFloorExceeded(floorNu
 	totalConsumption := c.powerController.TotalPowerConsumptionAtFloor(floorNumber)
 	totalMainCorridors := c.hotelService.GetNumberOfCorridors(MAIN)
 	totalSubCorridors := c.hotelService.GetNumberOfCorridors(SUB)
-	return totalConsumption >= (totalMainCorridors*15)+(totalSubCorridors*10)
+	return totalConsumption >=
+		(totalMainCorridors*MainCorridorPowerConsumptionThresholdMultiplier)+
+			(totalSubCorridors*SubCorridorPowerConsumptionThresholdMultiplier)
 }
 
 func (c *PowerAutomationController) toggleSubCorridorAC(atLocation ApplianceLocation, switchOn bool) {
@@ -64,3 +69,8 @@ func (c *PowerAutomationController) toggleSubCorridorAC(atLocation ApplianceLoca
 		Location:      atLocation,
 	})
 }
+
+const (
+	MainCorridorPowerConsumptionThresholdMultiplier = 15
+	SubCorridorPowerConsumptionThresholdMultiplier  = 10
+)

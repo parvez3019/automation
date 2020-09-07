@@ -10,12 +10,18 @@ type ObserverI interface {
 	Update(ToggleApplianceRequest) error
 }
 
+type PowerControllerServiceI interface {
+	RegisterDevices()
+	Update(request ToggleApplianceRequest) error
+	TotalPowerConsumptionAtFloor(floorNumber int) int
+}
+
 type PowerControllerService struct {
-	hotelService *HotelService
+	hotelService HotelServiceI
 	devices      map[ApplianceLocationKey]ApplianceStateI
 }
 
-func NewPowerControllerService(hotelService *HotelService) *PowerControllerService {
+func NewPowerControllerService(hotelService HotelServiceI) *PowerControllerService {
 	devices := make(map[ApplianceLocationKey]ApplianceStateI, 0)
 	return &PowerControllerService{hotelService: hotelService, devices: devices}
 }
