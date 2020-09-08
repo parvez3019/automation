@@ -1,8 +1,11 @@
 package main
 
-import . "HotelAutomation/IO"
+import (
+	. "HotelAutomation/IO"
+	. "HotelAutomation/runner"
+)
 
 func main() {
 	consoleReader := NewConsoleReader()
-	NewApplicationRunner().Run(consoleReader)
+	NewApplication().Run(consoleReader)
 }

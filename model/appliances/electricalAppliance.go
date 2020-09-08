@@ -10,7 +10,7 @@ type ApplianceInfoI interface {
 type ApplianceStateI interface {
 	IsOn() bool
 	GetId() int
-	GetType() string
+	GetType() ApplianceType
 	GetPowerConsumption() int
 	SetSwitchedOn(bool)
 }
@@ -38,8 +38,8 @@ func (appliance *Appliance) GetId() int {
 	return appliance.id
 }
 
-func (appliance *Appliance) GetType() string {
-	return string(appliance.applianceType)
+func (appliance *Appliance) GetType() ApplianceType {
+	return appliance.applianceType
 }
 
 func (appliance *Appliance) GetPowerConsumption() int {

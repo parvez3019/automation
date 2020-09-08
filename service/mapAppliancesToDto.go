@@ -9,7 +9,7 @@ func mapApplianceToApplianceInfo(appliances []Appliances) []AppliancesInfo {
 	appliancesInfo := make([]AppliancesInfo, 0)
 	for _, a := range appliances {
 		appliancesInfo = append(appliancesInfo, AppliancesInfo{
-			Name:             a.Appliance.GetType(),
+			Name:             string(a.Appliance.GetType()),
 			Number:           a.Appliance.GetId(),
 			IsSwitchedOd:     a.Appliance.IsOn(),
 			PowerConsumption: a.Appliance.GetPowerConsumption(),

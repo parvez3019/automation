@@ -48,9 +48,9 @@ func (c *PowerAutomationController) toggleAppliance(request ToggleApplianceReque
 }
 
 func (c *PowerAutomationController) verifyAndToggleACBasedOnTotalPowerConsumption(atLocation CorridorLocation) {
-	c.toggleAC(atLocation, true)
+	c.toggleSubCorridorAC(atLocation.FloorNumber, true)
 	if c.totalPowerConsumptionAtFloorExceeded(atLocation.FloorNumber) {
-		c.toggleAC(atLocation, false)
+		c.toggleSubCorridorAC(atLocation.FloorNumber, false)
 		return
 	}
 }
@@ -71,6 +71,10 @@ func (c *PowerAutomationController) toggleAC(atLocation CorridorLocation, switch
 		TurnOn:   switchOn,
 		Location: atLocation,
 	})
+}
+
+func (c *PowerAutomationController) toggleSubCorridorAC(floor int, switchOn bool) {
+	c.powerController.ToggleApplianceToReverseState(floor, SUB, AC, switchOn)
 }
 
 const (

@@ -8,8 +8,9 @@ import (
 
 type PowerControllerServiceI interface {
 	RegisterDevices()
-	Update(request ToggleApplianceRequest) error
-	TotalPowerConsumptionAtFloor(floorNumber int) int
+	Update(ToggleApplianceRequest) error
+	TotalPowerConsumptionAtFloor(int) int
+	ToggleApplianceToReverseState(int, CorridorType, ApplianceType, bool)
 }
 
 type PowerControllerService struct {
@@ -49,14 +50,28 @@ func (c *PowerControllerService) TotalPowerConsumptionAtFloor(floorNumber int) i
 	return totalPower
 }
 
+func (c *PowerControllerService) ToggleApplianceToReverseState(floor int,
+	corridorType CorridorType, applianceType ApplianceType, toggleTo bool) {
+	for key, a := range c.devices {
+		if matchLocationAndType(key, floor, corridorType, a, applianceType) && a.IsOn() == !toggleTo {
+			a.SetSwitchedOn(toggleTo)
+			return
+		}
+	}
+}
+
+func matchLocationAndType(key ApplianceLocationKey, floor int, corridorType CorridorType, a ApplianceStateI, applianceType ApplianceType) bool {
+	return key.location.FloorNumber == floor && key.location.CorridorType == corridorType && a.GetType() == applianceType
+}
+
 func (c *PowerControllerService) setApplianceToInitialSwitchedState(appliance ApplianceStateI, cType CorridorType) {
-	if appliance.GetType() == string(LIGHT) && cType == SUB {
+	if appliance.GetType() == LIGHT && cType == SUB {
 		appliance.SetSwitchedOn(false)
 	}
-	if appliance.GetType() == string(LIGHT) && cType == MAIN {
+	if appliance.GetType() == LIGHT && cType == MAIN {
 		appliance.SetSwitchedOn(true)
 	}
-	if appliance.GetType() == string(AC) {
+	if appliance.GetType() == AC {
 		appliance.SetSwitchedOn(true)
 	}
 }
@@ -70,12 +85,12 @@ func createKeyFromApplianceStateI(a Appliances) ApplianceLocationKey {
 
 func createApplianceLocationKeyFromToggleRequest(request ToggleApplianceRequest) ApplianceLocationKey {
 	return ApplianceLocationKey{
-		aType:    string(request.AppType),
+		aType:    request.AppType,
 		location: request.Location,
 	}
 }
 
 type ApplianceLocationKey struct {
-	aType    string
+	aType    ApplianceType
 	location CorridorLocation
 }

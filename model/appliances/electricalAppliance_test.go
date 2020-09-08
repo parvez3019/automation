@@ -10,7 +10,7 @@ func TestNewElectricalAppliance(t *testing.T) {
 	assert.Equal(t, 1, appliance.GetId())
 	assert.Equal(t, 10, appliance.GetPowerConsumption())
 	assert.False(t, appliance.IsOn())
-	assert.Equal(t, "Light", appliance.GetType())
+	assert.Equal(t, LIGHT, appliance.GetType())
 }
 
 func TestShouldTurnOnTheElectricalAppliance(t *testing.T) {

@@ -1,4 +1,4 @@
-package main
+package runner
 
 import (
 	. "HotelAutomation/IO"
@@ -7,18 +7,18 @@ import (
 	"fmt"
 )
 
-type ApplicationRunner struct {
+type Application struct {
 }
 
-func NewApplicationRunner() *ApplicationRunner {
-	return &ApplicationRunner{}
+func NewApplication() *Application {
+	return &Application{}
 }
 
-func (*ApplicationRunner) Run(reader Reader) {
+func (*Application) Run(reader Reader) {
 	hotelConfig := GetHotelConfig()
 	motionController, hotelService := setupHotelWithPowerAndMotionControllers(hotelConfig)
 
-	fmt.Println("Initial State")
+	fmt.Println("Default state")
 	hotelService.PrintHotelApplianceState()
 	input := make(chan string)
 
@@ -34,9 +34,9 @@ func GetHotelConfig() CreateHotelRequest {
 	var floor, mainCorridor, subCorridor int
 	fmt.Print("Number of floors : ")
 	fmt.Scanf("%d", &floor)
-	fmt.Print("Main corridors per floor: : ")
+	fmt.Print("Main corridors per floor: ")
 	fmt.Scanf("%d", &mainCorridor)
-	fmt.Print("Sub corridors per floor: : ")
+	fmt.Print("Sub corridors per floor: ")
 	fmt.Scanf("%d", &subCorridor)
 	return CreateHotelRequest{NumberOfFloors: floor, MainCorridorPerFloor: mainCorridor, SubCorridorPerFloor: subCorridor}
 }
