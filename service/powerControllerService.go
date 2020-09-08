@@ -6,10 +6,6 @@ import (
 	"errors"
 )
 
-type ObserverI interface {
-	Update(ToggleApplianceRequest) error
-}
-
 type PowerControllerServiceI interface {
 	RegisterDevices()
 	Update(request ToggleApplianceRequest) error
@@ -81,5 +77,5 @@ func createApplianceLocationKeyFromToggleRequest(request ToggleApplianceRequest)
 
 type ApplianceLocationKey struct {
 	aType    string
-	location ApplianceLocation
+	location CorridorLocation
 }

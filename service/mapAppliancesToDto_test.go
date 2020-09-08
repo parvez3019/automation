@@ -34,11 +34,11 @@ func TestShouldReturnListOfApplianceFromMainCorridorOnlyInCaseOfNoSubCorridors(t
 	expectedApplianceInfo := []AppliancesInfo{
 		{
 			Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5,
-			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
+			Location: CorridorLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
 		},
 		{
 			Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10,
-			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
+			Location: CorridorLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
 		},
 	}
 
@@ -53,11 +53,11 @@ func TestShouldReturnListOfApplianceFromSubCorridorOnlyInCaseOfNoMainCorridors(t
 	expectedApplianceInfo := []AppliancesInfo{
 		{
 			Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5,
-			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1},
+			Location: CorridorLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1},
 		},
 		{
 			Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10,
-			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1},
+			Location: CorridorLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1},
 		},
 	}
 
@@ -73,19 +73,19 @@ func TestShouldReturnListOfApplianceFromAllCorridor(t *testing.T) {
 	expectedApplianceInfo := []AppliancesInfo{
 		{
 			Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5,
-			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
+			Location: CorridorLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
 		},
 		{
 			Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10,
-			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
+			Location: CorridorLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
 		},
 		{
 			Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5,
-			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1},
+			Location: CorridorLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1},
 		},
 		{
 			Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10,
-			Location: ApplianceLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1},
+			Location: CorridorLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1},
 		},
 	}
 

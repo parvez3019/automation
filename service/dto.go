@@ -3,7 +3,7 @@ package service
 import . "HotelAutomation/model/appliances"
 
 type Appliances struct {
-	Location  ApplianceLocation
+	Location  CorridorLocation
 	Appliance ApplianceStateI
 }
 
@@ -12,10 +12,10 @@ type AppliancesInfo struct {
 	Number           int
 	IsSwitchedOd     bool
 	PowerConsumption int
-	Location         ApplianceLocation
+	Location         CorridorLocation
 }
 
-type ApplianceLocation struct {
+type CorridorLocation struct {
 	FloorNumber    int
 	CorridorType   string
 	CorridorNumber int
@@ -30,5 +30,10 @@ type CreateHotelRequest struct {
 type ToggleApplianceRequest struct {
 	ApplianceType ApplianceType
 	SwitchOn      bool
-	Location      ApplianceLocation
+	Location      CorridorLocation
+}
+
+type MovementDetectedEvent struct {
+	Movement bool
+	Location CorridorLocation
 }

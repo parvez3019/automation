@@ -7,45 +7,48 @@ import (
 	"fmt"
 )
 
+type Subscriber interface {
+	Update(MovementDetectedEvent)
+}
+
 type PowerAutomationController struct {
-	hotelService     HotelServiceI
-	powerController  PowerControllerServiceI
-	motionController *MotionController
+	hotelService    HotelServiceI
+	powerController PowerControllerServiceI
 }
 
 func NewPowerAutomationController(
 	hService HotelServiceI,
 	pController PowerControllerServiceI,
-	mController *MotionController,
 ) *PowerAutomationController {
 	return &PowerAutomationController{
-		hotelService:     hService,
-		powerController:  pController,
-		motionController: mController,
+		hotelService:    hService,
+		powerController: pController,
 	}
 }
 
-func (c *PowerAutomationController) Init(request CreateHotelRequest) {
-	c.hotelService.CreateHotel(request)
+func (c *PowerAutomationController) Init() {
 	c.powerController.RegisterDevices()
-	c.motionController.addObserver(c.powerController)
-	//fmt.Println(c.hotelService.GetAppliancesInfo())
 }
 
-func (c *PowerAutomationController) MovementDetected(atLocation ApplianceLocation, movement bool) {
-	turnOnLightAtLocationRequest := ToggleApplianceRequest{ApplianceType: LIGHT, SwitchOn: movement, Location: atLocation}
-	err := c.motionController.NotifyAll(turnOnLightAtLocationRequest)
+func (c *PowerAutomationController) Update(request MovementDetectedEvent) {
+	turnOnLightAtLocationRequest := ToggleApplianceRequest{ApplianceType: LIGHT,
+		SwitchOn: request.Movement, Location: request.Location}
+	err := c.powerController.Update(turnOnLightAtLocationRequest)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	c.verifyTotalPowerConsumptionAtFloor(atLocation)
+	c.verifyAndToggleACBasedOnTotalPowerConsumption(request.Location)
+}
+
+func (c *PowerAutomationController) GetCurrentStateInfoOfApplianceWithLocation() []AppliancesInfo {
+	return c.hotelService.GetAppliancesInfo()
 }
 
 func (c *PowerAutomationController) toggleAppliance(request ToggleApplianceRequest) error {
 	return c.powerController.Update(request)
 }
 
-func (c *PowerAutomationController) verifyTotalPowerConsumptionAtFloor(atLocation ApplianceLocation) {
+func (c *PowerAutomationController) verifyAndToggleACBasedOnTotalPowerConsumption(atLocation CorridorLocation) {
 	if c.totalPowerConsumptionAtFloorExceeded(atLocation.FloorNumber) {
 		c.toggleSubCorridorAC(atLocation, false)
 		return
@@ -62,7 +65,7 @@ func (c *PowerAutomationController) totalPowerConsumptionAtFloorExceeded(floorNu
 			(totalSubCorridors*SubCorridorPowerConsumptionThresholdMultiplier)
 }
 
-func (c *PowerAutomationController) toggleSubCorridorAC(atLocation ApplianceLocation, switchOn bool) {
+func (c *PowerAutomationController) toggleSubCorridorAC(atLocation CorridorLocation, switchOn bool) {
 	_ = c.toggleAppliance(ToggleApplianceRequest{
 		ApplianceType: AC,
 		SwitchOn:      switchOn,
