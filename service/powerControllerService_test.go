@@ -54,6 +54,25 @@ func TestShouldTurnOnTheLightAtFloorOneMainCorridor(t *testing.T) {
 	assert.ElementsMatch(t, expectedHotelApplianceInfo, hotelService.GetAppliancesInfo())
 }
 
+func TestShouldReturnErrorIfApplianceNotFound(t *testing.T) {
+	request := CreateHotelRequest{NumberOfFloors: 1, MainCorridorPerFloor: 1, SubCorridorPerFloor: 0}
+	_, powerController := setupHotelServiceAndRegisterDevicesToPowerController(request)
+
+	toggleApplianceRequest := ToggleApplianceRequest{
+		AppType: "Light", TurnOn: true,
+		Location: CorridorLocation{FloorNumber: 2, CorridorType: "Main", CorridorNumber: 1},
+	}
+	err := powerController.Update(toggleApplianceRequest)
+	assert.EqualError(t, err, "ApplianceNotFound")
+}
+
+func TestShouldReturnTotalPowerConsumptionByActiveAppliances(t *testing.T)  {
+	request := CreateHotelRequest{NumberOfFloors: 1, MainCorridorPerFloor: 1, SubCorridorPerFloor: 1}
+	_, pc := setupHotelServiceAndRegisterDevicesToPowerController(request)
+
+	assert.Equal(t, 25, pc.TotalPowerConsumptionAtFloor(1))
+}
+
 func TestShouldToggleOffAnOnStateAppliance(t *testing.T) {
 	request := CreateHotelRequest{NumberOfFloors: 1, MainCorridorPerFloor: 1, SubCorridorPerFloor: 2}
 	_, powerController := setupHotelServiceAndRegisterDevicesToPowerController(request)

@@ -9,6 +9,12 @@ func TestShouldReturnNewFloorWithLevel1(t *testing.T) {
 	assert.Equal(t, 1, NewFloor(1).GetLevel())
 }
 
+func TestShouldReturnEmptyListInCaseOfInvalidCorridor(t *testing.T)  {
+	floor := NewFloor(1).
+		AddCorridors([]*Corridor{NewCorridor(MAIN, 1)})
+	assert.Len(t, floor.GetCorridors("ABC"), 0)
+}
+
 func TestShouldAddOneMainCorridorAndTwoSubCorridor(t *testing.T) {
 	floor := NewFloor(1).
 		AddCorridors([]*Corridor{NewCorridor(MAIN, 1)}).
