@@ -15,7 +15,7 @@ func NewApplication() *Application {
 }
 
 func (*Application) Run(reader Reader) {
-	hotelConfig := GetHotelConfig()
+	hotelConfig := getHotelConfig()
 	motionController, hotelService := setupHotelWithPowerAndMotionControllers(hotelConfig)
 
 	fmt.Println("Default state")
@@ -30,7 +30,28 @@ func (*Application) Run(reader Reader) {
 	}
 }
 
-func GetHotelConfig() CreateHotelRequest {
+func takeInput(input chan string, reader Reader) {
+	for {
+		input <- reader.Read()
+	}
+}
+
+func raiseMotionDetectedEvent(hotelService *HotelService, controller *MotionController, input chan string) {
+	for {
+		select {
+		case inputString := <-input:
+			movementDetectedEvent, err := NewInputParser().ParseMovementInput(inputString)
+			if err != nil {
+				fmt.Println(err.Error())
+				continue
+			}
+			controller.RaiseMotionDetectedEvent(movementDetectedEvent)
+			hotelService.PrintHotelApplianceState()
+		}
+	}
+}
+
+func getHotelConfig() CreateHotelRequest {
 	var floor, mainCorridor, subCorridor int
 	fmt.Print("Number of floors : ")
 	fmt.Scanf("%d", &floor)
@@ -54,23 +75,3 @@ func setupHotelWithPowerAndMotionControllers(createHotelReq CreateHotelRequest) 
 	return motionController, hotelService
 }
 
-func takeInput(input chan string, reader Reader) {
-	for {
-		input <- reader.Read()
-	}
-}
-
-func raiseMotionDetectedEvent(hotelService *HotelService, controller *MotionController, input chan string) {
-	for {
-		select {
-		case inputString := <-input:
-			movementDetectedEvent, err := NewInputParser().ParseMovementInput(inputString)
-			if err != nil {
-				fmt.Println(err.Error())
-				continue
-			}
-			controller.RaiseMotionDetectedEvent(movementDetectedEvent)
-			hotelService.PrintHotelApplianceState()
-		}
-	}
-}
