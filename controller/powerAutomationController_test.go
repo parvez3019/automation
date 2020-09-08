@@ -27,8 +27,8 @@ func TestShouldToggleOnLightAtLocationWhenMovementDetectedAndKeepACOnIfPowerCons
 	mockHotelService, mockPowerControllerService, motionController, paController := setupMockServices()
 	location := CorridorLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1}
 
-	toggleLightBulbReq := ToggleApplianceRequest{ApplianceType: "Light", SwitchOn: true, Location: location}
-	toggleACReq := ToggleApplianceRequest{ApplianceType: "AC", SwitchOn: true, Location: location}
+	toggleLightBulbReq := ToggleApplianceRequest{AppType: "Light", TurnOn: true, Location: location}
+	toggleACReq := ToggleApplianceRequest{AppType: "AC", TurnOn: true, Location: location}
 
 	mockPowerControllerService.On("Update", toggleLightBulbReq).Return(nil)
 	mockPowerControllerService.On("Update", toggleACReq).Return(nil)
@@ -47,8 +47,8 @@ func TestShouldToggleOnLightAtLocationWhenMovementDetectedAndTurnSubCorridorACIf
 	mockHotelService, mockPowerControllerService, motionController, paController := setupMockServices()
 	location := CorridorLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1}
 
-	toggleLightBulbReq := ToggleApplianceRequest{ApplianceType: "Light", SwitchOn: true, Location: location}
-	toggleACReq := ToggleApplianceRequest{ApplianceType: "AC", SwitchOn: false, Location: location}
+	toggleLightBulbReq := ToggleApplianceRequest{AppType: "Light", TurnOn: true, Location: location}
+	toggleACReq := ToggleApplianceRequest{AppType: "AC", TurnOn: false, Location: location}
 
 	mockPowerControllerService.On("Update", toggleLightBulbReq).Return(nil)
 	mockPowerControllerService.On("Update", toggleACReq).Return(nil)
@@ -67,8 +67,8 @@ func TestShouldTurnAcBackOnIfPowerConsumptionGoesLesserThanThreshold(t *testing.
 	mockHotelService, mockPowerControllerService, motionController, paController := setupMockServices()
 	location := CorridorLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1}
 
-	toggleLightBulbReq := ToggleApplianceRequest{ApplianceType: "Light", SwitchOn: false, Location: location}
-	toggleACReq := ToggleApplianceRequest{ApplianceType: "AC", SwitchOn: true, Location: location}
+	toggleLightBulbReq := ToggleApplianceRequest{AppType: "Light", TurnOn: false, Location: location}
+	toggleACReq := ToggleApplianceRequest{AppType: "AC", TurnOn: true, Location: location}
 
 	mockPowerControllerService.On("Update", toggleLightBulbReq).Return(nil)
 	mockPowerControllerService.On("Update", toggleACReq).Return(nil)

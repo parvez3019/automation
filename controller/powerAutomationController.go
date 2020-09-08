@@ -31,9 +31,8 @@ func (c *PowerAutomationController) Init() {
 }
 
 func (c *PowerAutomationController) Update(request MovementDetectedEvent) {
-	turnOnLightAtLocationRequest := ToggleApplianceRequest{ApplianceType: LIGHT,
-		SwitchOn: request.Movement, Location: request.Location}
-	err := c.powerController.Update(turnOnLightAtLocationRequest)
+	toggleLightBulbRequest := ToggleApplianceRequest{AppType: LIGHT, TurnOn: request.Movement, Location: request.Location}
+	err := c.powerController.Update(toggleLightBulbRequest)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -67,9 +66,9 @@ func (c *PowerAutomationController) totalPowerConsumptionAtFloorExceeded(floorNu
 
 func (c *PowerAutomationController) toggleSubCorridorAC(atLocation CorridorLocation, switchOn bool) {
 	_ = c.toggleAppliance(ToggleApplianceRequest{
-		ApplianceType: AC,
-		SwitchOn:      switchOn,
-		Location:      atLocation,
+		AppType:  AC,
+		TurnOn:   switchOn,
+		Location: atLocation,
 	})
 }
 

@@ -28,7 +28,7 @@ func TestShouldTurnOnTheLightAtFloorOneMainCorridor(t *testing.T) {
 	hotelService, powerController := setupHotelServiceAndRegisterDevicesToPowerController(request)
 
 	toggleApplianceRequest := ToggleApplianceRequest{
-		ApplianceType: "Light", SwitchOn: true,
+		AppType: "Light", TurnOn: true,
 		Location: CorridorLocation{FloorNumber: 1, CorridorType: "Main", CorridorNumber: 1},
 	}
 	err := powerController.Update(toggleApplianceRequest)

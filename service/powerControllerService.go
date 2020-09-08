@@ -33,7 +33,7 @@ func (c *PowerControllerService) RegisterDevices() {
 func (c *PowerControllerService) Update(request ToggleApplianceRequest) error {
 	applianceLocationKey := createApplianceLocationKeyFromToggleRequest(request)
 	if appliance, ok := c.devices[applianceLocationKey]; ok {
-		appliance.SetSwitchedOn(request.SwitchOn)
+		appliance.SetSwitchedOn(request.TurnOn)
 		return nil
 	}
 	return errors.New("ApplianceNotFound")
@@ -70,7 +70,7 @@ func createKeyFromApplianceStateI(a Appliances) ApplianceLocationKey {
 
 func createApplianceLocationKeyFromToggleRequest(request ToggleApplianceRequest) ApplianceLocationKey {
 	return ApplianceLocationKey{
-		aType:    string(request.ApplianceType),
+		aType:    string(request.AppType),
 		location: request.Location,
 	}
 }

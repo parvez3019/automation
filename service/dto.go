@@ -28,9 +28,9 @@ type CreateHotelRequest struct {
 }
 
 type ToggleApplianceRequest struct {
-	ApplianceType ApplianceType
-	SwitchOn      bool
-	Location      CorridorLocation
+	AppType  ApplianceType
+	TurnOn   bool
+	Location CorridorLocation
 }
 
 type MovementDetectedEvent struct {
