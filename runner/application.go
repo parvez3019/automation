@@ -8,22 +8,24 @@ import (
 )
 
 type Application struct {
+	reader Reader
 }
 
-func NewApplication() *Application {
-	return &Application{}
+func NewApplication(reader Reader) *Application {
+	return &Application{reader: reader}
 }
 
-func (*Application) Run(reader Reader) {
+func (app *Application) Run() {
 	hotelConfig := getHotelConfig()
 	motionController, hotelService := setupHotelWithPowerAndMotionControllers(hotelConfig)
+	f := NewFormatter()
 
 	fmt.Println("Default state")
-	hotelService.PrintHotelApplianceState()
+	fmt.Println(f.ApplianceInfoToString(hotelService.GetAppliancesInfo()))
 	input := make(chan string)
 
-	go takeInput(input, reader)
-	go raiseMotionDetectedEvent(hotelService, motionController, input)
+	go takeInput(input, app.reader)
+	go raiseMotionDetectedEvent(hotelService, motionController, input, f)
 
 	select {
 	//Run Infinitely
@@ -36,7 +38,7 @@ func takeInput(input chan string, reader Reader) {
 	}
 }
 
-func raiseMotionDetectedEvent(hotelService *HotelService, controller *MotionController, input chan string) {
+func raiseMotionDetectedEvent(hotelService *HotelService, controller *MotionController, input chan string, f *Formatter) {
 	for {
 		select {
 		case inputString := <-input:
@@ -46,7 +48,8 @@ func raiseMotionDetectedEvent(hotelService *HotelService, controller *MotionCont
 				continue
 			}
 			controller.RaiseMotionDetectedEvent(movementDetectedEvent)
-			hotelService.PrintHotelApplianceState()
+			fmt.Println(f.ApplianceInfoToString(hotelService.GetAppliancesInfo()))
+			fmt.Println("--------------------")
 		}
 	}
 }

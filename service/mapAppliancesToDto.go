@@ -11,7 +11,7 @@ func mapApplianceToApplianceInfo(appliances []Appliances) []AppliancesInfo {
 		appliancesInfo = append(appliancesInfo, AppliancesInfo{
 			Name:             string(a.Appliance.GetType()),
 			Number:           a.Appliance.GetId(),
-			IsSwitchedOd:     a.Appliance.IsOn(),
+			IsSwitchedOn:     a.Appliance.IsOn(),
 			PowerConsumption: a.Appliance.GetPowerConsumption(),
 			Location:         a.Location,
 		})

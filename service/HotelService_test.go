@@ -12,18 +12,18 @@ func TestShouldReturnApplianceInfo(t *testing.T) {
 	hotelService.CreateHotel(request)
 
 	expectedAppliances := []AppliancesInfo{
-		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: CorridorLocation{FloorNumber: 1, CorridorType: MAIN, CorridorNumber: 1}},
-		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: CorridorLocation{FloorNumber: 2, CorridorType: MAIN, CorridorNumber: 1}},
-		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: CorridorLocation{FloorNumber: 1, CorridorType: MAIN, CorridorNumber: 1}},
-		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: CorridorLocation{FloorNumber: 2, CorridorType: MAIN, CorridorNumber: 1}},
-		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: CorridorLocation{FloorNumber: 1, CorridorType: SUB, CorridorNumber: 1}},
-		{Name: "Light", Number: 2, IsSwitchedOd: false, PowerConsumption: 5, Location: CorridorLocation{FloorNumber: 1, CorridorType: SUB, CorridorNumber: 2}},
-		{Name: "Light", Number: 1, IsSwitchedOd: false, PowerConsumption: 5, Location: CorridorLocation{FloorNumber: 2, CorridorType: SUB, CorridorNumber: 1}},
-		{Name: "Light", Number: 2, IsSwitchedOd: false, PowerConsumption: 5, Location: CorridorLocation{FloorNumber: 2, CorridorType: SUB, CorridorNumber: 2}},
-		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: CorridorLocation{FloorNumber: 1, CorridorType: SUB, CorridorNumber: 1}},
-		{Name: "AC", Number: 2, IsSwitchedOd: false, PowerConsumption: 10, Location: CorridorLocation{FloorNumber: 1, CorridorType: SUB, CorridorNumber: 2}},
-		{Name: "AC", Number: 1, IsSwitchedOd: false, PowerConsumption: 10, Location: CorridorLocation{FloorNumber: 2, CorridorType: SUB, CorridorNumber: 1}},
-		{Name: "AC", Number: 2, IsSwitchedOd: false, PowerConsumption: 10, Location: CorridorLocation{FloorNumber: 2, CorridorType: SUB, CorridorNumber: 2}},
+		{Name: "Light", Number: 1, IsSwitchedOn: false, PowerConsumption: 5, Location: CorridorLocation{FloorNumber: 1, CorridorType: MAIN, CorridorNumber: 1}},
+		{Name: "Light", Number: 1, IsSwitchedOn: false, PowerConsumption: 5, Location: CorridorLocation{FloorNumber: 2, CorridorType: MAIN, CorridorNumber: 1}},
+		{Name: "AC", Number: 1, IsSwitchedOn: false, PowerConsumption: 10, Location: CorridorLocation{FloorNumber: 1, CorridorType: MAIN, CorridorNumber: 1}},
+		{Name: "AC", Number: 1, IsSwitchedOn: false, PowerConsumption: 10, Location: CorridorLocation{FloorNumber: 2, CorridorType: MAIN, CorridorNumber: 1}},
+		{Name: "Light", Number: 1, IsSwitchedOn: false, PowerConsumption: 5, Location: CorridorLocation{FloorNumber: 1, CorridorType: SUB, CorridorNumber: 1}},
+		{Name: "Light", Number: 2, IsSwitchedOn: false, PowerConsumption: 5, Location: CorridorLocation{FloorNumber: 1, CorridorType: SUB, CorridorNumber: 2}},
+		{Name: "Light", Number: 1, IsSwitchedOn: false, PowerConsumption: 5, Location: CorridorLocation{FloorNumber: 2, CorridorType: SUB, CorridorNumber: 1}},
+		{Name: "Light", Number: 2, IsSwitchedOn: false, PowerConsumption: 5, Location: CorridorLocation{FloorNumber: 2, CorridorType: SUB, CorridorNumber: 2}},
+		{Name: "AC", Number: 1, IsSwitchedOn: false, PowerConsumption: 10, Location: CorridorLocation{FloorNumber: 1, CorridorType: SUB, CorridorNumber: 1}},
+		{Name: "AC", Number: 2, IsSwitchedOn: false, PowerConsumption: 10, Location: CorridorLocation{FloorNumber: 1, CorridorType: SUB, CorridorNumber: 2}},
+		{Name: "AC", Number: 1, IsSwitchedOn: false, PowerConsumption: 10, Location: CorridorLocation{FloorNumber: 2, CorridorType: SUB, CorridorNumber: 1}},
+		{Name: "AC", Number: 2, IsSwitchedOn: false, PowerConsumption: 10, Location: CorridorLocation{FloorNumber: 2, CorridorType: SUB, CorridorNumber: 2}},
 	}
 
 	appliances := hotelService.GetAppliancesInfo()

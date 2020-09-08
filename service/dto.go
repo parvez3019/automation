@@ -13,7 +13,7 @@ type Appliances struct {
 type AppliancesInfo struct {
 	Name             string
 	Number           int
-	IsSwitchedOd     bool
+	IsSwitchedOn     bool
 	PowerConsumption int
 	Location         CorridorLocation
 }
