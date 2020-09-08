@@ -1,7 +1,9 @@
 package service
 
 import (
+	. "HotelAutomation/model"
 	_ "HotelAutomation/model"
+	. "HotelAutomation/model/appliances"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -50,6 +52,44 @@ func TestShouldTurnOnTheLightAtFloorOneMainCorridor(t *testing.T) {
 	}
 	assert.Nil(t, err)
 	assert.ElementsMatch(t, expectedHotelApplianceInfo, hotelService.GetAppliancesInfo())
+}
+
+func TestShouldToggleOffAnOnStateAppliance(t *testing.T) {
+	request := CreateHotelRequest{NumberOfFloors: 1, MainCorridorPerFloor: 1, SubCorridorPerFloor: 2}
+	_, powerController := setupHotelServiceAndRegisterDevicesToPowerController(request)
+	locationKeySub1 := ApplianceLocationKey{
+		aType: AC, location: CorridorLocation{FloorNumber: 1, CorridorType: SUB, CorridorNumber: 1},
+	}
+	locationKeySub2 := ApplianceLocationKey{
+		aType: AC, location: CorridorLocation{FloorNumber: 1, CorridorType: SUB, CorridorNumber: 2},
+	}
+	powerController.devices[locationKeySub2].SetSwitchedOn(false)
+	before := powerController.devices[locationKeySub1].IsOn()
+
+	powerController.ToggleApplianceToReverseState(1, SUB, AC, false)
+
+	assert.Equal(t, true, before)
+	assert.Equal(t, false, powerController.devices[locationKeySub1].IsOn())
+}
+
+func TestShouldToggleOnAnOFFStateAppliance(t *testing.T) {
+	request := CreateHotelRequest{NumberOfFloors: 1, MainCorridorPerFloor: 1, SubCorridorPerFloor: 2}
+	_, powerController := setupHotelServiceAndRegisterDevicesToPowerController(request)
+	locationKeySub1 := ApplianceLocationKey{
+		aType:    AC,
+		location: CorridorLocation{FloorNumber: 1, CorridorType: SUB, CorridorNumber: 1},
+	}
+	locationKeySub2 := ApplianceLocationKey{
+		aType: AC, location: CorridorLocation{FloorNumber: 1, CorridorType: SUB, CorridorNumber: 2},
+	}
+	powerController.devices[locationKeySub2].SetSwitchedOn(true)
+	appliance := powerController.devices[locationKeySub1]
+	appliance.SetSwitchedOn(false)
+	before := appliance.IsOn()
+
+	powerController.ToggleApplianceToReverseState(1, SUB, AC, true)
+	assert.Equal(t, false, before)
+	assert.Equal(t, true, appliance.IsOn())
 }
 
 func getInfoAsMainCorridorLightOnAndSubCorridorOffAndBothCorridorACsInOnState() []AppliancesInfo {

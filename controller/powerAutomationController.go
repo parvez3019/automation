@@ -65,14 +65,6 @@ func (c *PowerAutomationController) totalPowerConsumptionAtFloorExceeded(floorNu
 	return totalConsumption > powerThreshold
 }
 
-func (c *PowerAutomationController) toggleAC(atLocation CorridorLocation, switchOn bool) {
-	_ = c.toggleAppliance(ToggleApplianceRequest{
-		AppType:  AC,
-		TurnOn:   switchOn,
-		Location: atLocation,
-	})
-}
-
 func (c *PowerAutomationController) toggleSubCorridorAC(floor int, switchOn bool) {
 	c.powerController.ToggleApplianceToReverseState(floor, SUB, AC, switchOn)
 }

@@ -3,6 +3,7 @@ package controller
 import (
 	mock "HotelAutomation/_mocks"
 	. "HotelAutomation/model"
+	. "HotelAutomation/model/appliances"
 	. "HotelAutomation/service"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -28,13 +29,12 @@ func TestShouldToggleOnLightAtLocationWhenMovementDetectedAndKeepACOnIfPowerCons
 	location := CorridorLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1}
 
 	toggleLightBulbReq := ToggleApplianceRequest{AppType: "Light", TurnOn: true, Location: location}
-	toggleACReq := ToggleApplianceRequest{AppType: "AC", TurnOn: true, Location: location}
 
 	mockPowerControllerService.On("Update", toggleLightBulbReq).Return(nil)
-	mockPowerControllerService.On("Update", toggleACReq).Return(nil)
+	mockPowerControllerService.On("ToggleApplianceToReverseState", 1, SUB, AC, true).Return()
 	mockPowerControllerService.On("TotalPowerConsumptionAtFloor", 1).Return(10)
-	mockHotelService.On("GetNumberOfCorridors", MAIN).Return(1)
-	mockHotelService.On("GetNumberOfCorridors", SUB).Return(1)
+	mockHotelService.On("GetNumberOfCorridors", 1, MAIN).Return(1)
+	mockHotelService.On("GetNumberOfCorridors", 1, SUB).Return(1)
 
 	paController.Update(MovementDetectedEvent{Movement: true, Location: location})
 
@@ -48,18 +48,18 @@ func TestShouldToggleOnLightAtLocationWhenMovementDetectedAndTurnSubCorridorACIf
 	location := CorridorLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1}
 
 	toggleLightBulbReq := ToggleApplianceRequest{AppType: "Light", TurnOn: true, Location: location}
-	toggleACReq := ToggleApplianceRequest{AppType: "AC", TurnOn: false, Location: location}
 
 	mockPowerControllerService.On("Update", toggleLightBulbReq).Return(nil)
-	mockPowerControllerService.On("Update", toggleACReq).Return(nil)
+	mockPowerControllerService.On("ToggleApplianceToReverseState", 1, SUB, AC, true).Return()
+	mockPowerControllerService.On("ToggleApplianceToReverseState", 1, SUB, AC, false).Return()
 	mockPowerControllerService.On("TotalPowerConsumptionAtFloor", 1).Return(50)
-	mockHotelService.On("GetNumberOfCorridors", MAIN).Return(1)
-	mockHotelService.On("GetNumberOfCorridors", SUB).Return(1)
+	mockHotelService.On("GetNumberOfCorridors", 1, MAIN).Return(1)
+	mockHotelService.On("GetNumberOfCorridors", 1, SUB).Return(1)
 
 	paController.Update(MovementDetectedEvent{Movement: true, Location: location})
 
 	assert.Equal(t, 2, len(mockHotelService.Calls))
-	assert.Equal(t, 3, len(mockPowerControllerService.Calls))
+	assert.Equal(t, 4, len(mockPowerControllerService.Calls))
 	assert.Len(t, motionController.subscribers, 1)
 }
 
@@ -68,13 +68,12 @@ func TestShouldTurnAcBackOnIfPowerConsumptionGoesLesserThanThreshold(t *testing.
 	location := CorridorLocation{FloorNumber: 1, CorridorType: "Sub", CorridorNumber: 1}
 
 	toggleLightBulbReq := ToggleApplianceRequest{AppType: "Light", TurnOn: false, Location: location}
-	toggleACReq := ToggleApplianceRequest{AppType: "AC", TurnOn: true, Location: location}
 
 	mockPowerControllerService.On("Update", toggleLightBulbReq).Return(nil)
-	mockPowerControllerService.On("Update", toggleACReq).Return(nil)
+	mockPowerControllerService.On("ToggleApplianceToReverseState", 1, SUB, AC, true).Return()
 	mockPowerControllerService.On("TotalPowerConsumptionAtFloor", 1).Return(10)
-	mockHotelService.On("GetNumberOfCorridors", MAIN).Return(1)
-	mockHotelService.On("GetNumberOfCorridors", SUB).Return(1)
+	mockHotelService.On("GetNumberOfCorridors", 1, MAIN).Return(1)
+	mockHotelService.On("GetNumberOfCorridors", 1, SUB).Return(1)
 
 	paController.Update(MovementDetectedEvent{Movement: false, Location: location})
 
