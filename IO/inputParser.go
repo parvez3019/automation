@@ -16,7 +16,7 @@ func NewInputParser() *InputParser {
 	return &InputParser{}
 }
 
-func(*InputParser) Parse(inputString string) (MovementDetectedEvent, error) {
+func(*InputParser) ParseMovementInput(inputString string) (MovementDetectedEvent, error) {
 	movementDetectedEvent := MovementDetectedEvent{}
 	if !validInputString(inputString) {
 		return movementDetectedEvent, errors.New("IncorrectInputFormat")
