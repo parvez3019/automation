@@ -2,6 +2,7 @@ package service
 
 import (
 	. "HotelAutomation/model"
+	. "HotelAutomation/model/appliances"
 	"fmt"
 )
 
@@ -53,10 +54,10 @@ func (hotelService *HotelService) PrintHotelApplianceState() {
 func printCorridor(floor *Floor, corridorType CorridorType) {
 	for _, corridor := range floor.GetCorridors(corridorType) {
 		fmt.Printf("%s Corridor %d ", corridor.GetType(), corridor.GetId())
-		for _, bulb := range corridor.GetLightBulbs() {
+		for _, bulb := range corridor.GetAppliances(LIGHT) {
 			fmt.Printf("Light %d : %s ", bulb.GetId(), toString(bulb.IsOn()))
 		}
-		for _, ac := range corridor.GetAirConditioners() {
+		for _, ac := range corridor.GetAppliances(AC) {
 			fmt.Printf("AC : %s", toString(ac.IsOn()))
 		}
 		fmt.Println()

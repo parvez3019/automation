@@ -1,6 +1,7 @@
 package model
 
 import (
+	. "HotelAutomation/model/appliances"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -36,8 +37,8 @@ func TestShouldBuildHotelWithoutLightBulbAndACInAnyCorridor(t *testing.T) {
 
 	assert.Equal(t, 6, len(hotel.GetAllCorridors()))
 	for _, c := range hotel.GetAllCorridors() {
-		assert.Equal(t, 1, len(c.GetLightBulbs()))
-		assert.Equal(t, 1, len(c.GetAirConditioners()))
+		assert.Equal(t, 1, len(c.GetAppliances(LIGHT)))
+		assert.Equal(t, 1, len(c.GetAppliances(AC)))
 	}
 
 }
@@ -51,8 +52,8 @@ func TestShouldBuildHotelWithLightBulbAndACInEachCorridor(t *testing.T) {
 
 	assert.Equal(t, 6, len(hotel.GetAllCorridors()))
 	for _, c := range hotel.GetAllCorridors() {
-		assert.Equal(t, 1, len(c.GetLightBulbs()))
-		assert.Equal(t, 1, len(c.GetAirConditioners()))
+		assert.Equal(t, 1, len(c.GetAppliances(LIGHT)))
+		assert.Equal(t, 1, len(c.GetAppliances(AC)))
 	}
 
 }

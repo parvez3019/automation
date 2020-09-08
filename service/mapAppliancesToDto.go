@@ -39,14 +39,14 @@ func mapCorridorLocation(floor *Floor, corridorType CorridorType) []Appliances {
 }
 
 func mapAC(corridor *Corridor, applianceStates []Appliances, applianceLocation CorridorLocation) []Appliances {
-	for _, ac := range corridor.GetAirConditioners() {
+	for _, ac := range corridor.GetAppliances(AC) {
 		applianceStates = append(applianceStates, mapToApplianceState(ac, applianceLocation))
 	}
 	return applianceStates
 }
 
 func mapLightBulb(corridor *Corridor, applianceStates []Appliances, applianceLocation CorridorLocation) []Appliances {
-	for _, bulb := range corridor.GetLightBulbs() {
+	for _, bulb := range corridor.GetAppliances(LIGHT) {
 		applianceStates = append(applianceStates, mapToApplianceState(bulb, applianceLocation))
 	}
 	return applianceStates

@@ -5,39 +5,37 @@ import (
 )
 
 type Corridor struct {
-	id              int
-	cType           CorridorType
-	lightBulbs      []*LightBulb
-	airConditioners []*AirConditioner
+	id         int
+	cType      CorridorType
+	appliances []ApplianceStateI
 }
 
 func NewCorridor(corridorType CorridorType, id int) *Corridor {
-	lightBulbs := make([]*LightBulb, 0)
-	airConditioners := make([]*AirConditioner, 0)
 	return &Corridor{
-		cType:           corridorType,
-		id:              id,
-		lightBulbs:      lightBulbs,
-		airConditioners: airConditioners,
+		cType:      corridorType,
+		id:         id,
+		appliances: make([]ApplianceStateI, 0),
 	}
 }
 
 func (c *Corridor) AddLightBulb(bulb *LightBulb) *Corridor {
-	c.lightBulbs = append(c.lightBulbs, bulb)
+	c.appliances = append(c.appliances, bulb)
 	return c
 }
 
 func (c *Corridor) AddAirConditioner(ac *AirConditioner) *Corridor {
-	c.airConditioners = append(c.airConditioners, ac)
+	c.appliances = append(c.appliances, ac)
 	return c
 }
 
-func (c *Corridor) GetLightBulbs() []*LightBulb {
-	return c.lightBulbs
-}
-
-func (c *Corridor) GetAirConditioners() []*AirConditioner {
-	return c.airConditioners
+func (c *Corridor) GetAppliances(applianceType ApplianceType) []ApplianceStateI {
+	appliances := make([]ApplianceStateI, 0)
+	for _, appliance := range c.appliances {
+		if appliance.GetType() == applianceType {
+			appliances = append(appliances, appliance)
+		}
+	}
+	return appliances
 }
 
 func (c *Corridor) GetType() CorridorType {
