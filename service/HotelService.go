@@ -41,11 +41,13 @@ func (hotelService *HotelService) GetNumberOfCorridors(floorNumber int, corridor
 }
 
 func (hotelService *HotelService) PrintHotelApplianceState() {
+	fmt.Println("-----------------------------")
 	for _, floor := range hotelService.hotel.GetFloors() {
 		fmt.Printf("Floor %d\n", floor.GetLevel())
 		printCorridor(floor, MAIN)
 		printCorridor(floor, SUB)
 	}
+	fmt.Println("-----------------------------")
 }
 
 func printCorridor(floor *Floor, corridorType CorridorType) {

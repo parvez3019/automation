@@ -42,7 +42,7 @@ func (c *PowerControllerService) Update(request ToggleApplianceRequest) error {
 func (c *PowerControllerService) TotalPowerConsumptionAtFloor(floorNumber int) int {
 	totalPower := 0
 	for location, appliance := range c.devices {
-		if location.location.FloorNumber == floorNumber {
+		if location.location.FloorNumber == floorNumber && appliance.IsOn() {
 			totalPower += appliance.GetPowerConsumption()
 		}
 	}

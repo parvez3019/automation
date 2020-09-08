@@ -48,11 +48,11 @@ func (c *PowerAutomationController) toggleAppliance(request ToggleApplianceReque
 }
 
 func (c *PowerAutomationController) verifyAndToggleACBasedOnTotalPowerConsumption(atLocation CorridorLocation) {
+	c.toggleAC(atLocation, true)
 	if c.totalPowerConsumptionAtFloorExceeded(atLocation.FloorNumber) {
 		c.toggleAC(atLocation, false)
 		return
 	}
-	c.toggleAC(atLocation, true)
 }
 
 func (c *PowerAutomationController) totalPowerConsumptionAtFloorExceeded(floorNumber int) bool {
@@ -62,7 +62,7 @@ func (c *PowerAutomationController) totalPowerConsumptionAtFloorExceeded(floorNu
 
 	powerThreshold := (totalMainCorridors * MainCorridorPowerConsumptionThresholdMultiplier) +
 		(totalSubCorridors * SubCorridorPowerConsumptionThresholdMultiplier)
-	return totalConsumption >= powerThreshold
+	return totalConsumption > powerThreshold
 }
 
 func (c *PowerAutomationController) toggleAC(atLocation CorridorLocation, switchOn bool) {
