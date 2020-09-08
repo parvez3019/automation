@@ -27,3 +27,12 @@ func TestShouldReturnApplianceInfo(t *testing.T) {
 
 	assert.ElementsMatch(t, expectedAppliances, hotelService.GetAppliancesInfo())
 }
+
+func TestShouldGetNumberOfCorridors(t *testing.T) {
+	request := CreateHotelRequest{NumberOfFloors: 2, MainCorridorPerFloor: 1, SubCorridorPerFloor: 2}
+	hotelService := NewHotelService()
+	hotelService.CreateHotel(request)
+
+	assert.Equal(t, 1, hotelService.GetNumberOfCorridors(1, "Main"))
+	assert.Equal(t, 2, hotelService.GetNumberOfCorridors(1, "Sub"))
+}

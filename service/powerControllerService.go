@@ -49,11 +49,11 @@ func (c *PowerControllerService) TotalPowerConsumptionAtFloor(floorNumber int) i
 	return totalPower
 }
 
-func (c *PowerControllerService) setApplianceToInitialSwitchedState(appliance ApplianceStateI, corridorType string) {
-	if appliance.GetType() == string(LIGHT) && corridorType == string(SUB) {
+func (c *PowerControllerService) setApplianceToInitialSwitchedState(appliance ApplianceStateI, cType CorridorType) {
+	if appliance.GetType() == string(LIGHT) && cType == SUB {
 		appliance.SetSwitchedOn(false)
 	}
-	if appliance.GetType() == string(LIGHT) && corridorType == string(MAIN) {
+	if appliance.GetType() == string(LIGHT) && cType == MAIN {
 		appliance.SetSwitchedOn(true)
 	}
 	if appliance.GetType() == string(AC) {

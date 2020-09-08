@@ -40,8 +40,8 @@ func (c *Corridor) GetAirConditioners() []*AirConditioner {
 	return c.airConditioners
 }
 
-func (c *Corridor) GetTypeAsString() string {
-	return string(c.cType)
+func (c *Corridor) GetType() CorridorType {
+	return c.cType
 }
 
 func (c *Corridor) GetId() int {

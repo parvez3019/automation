@@ -55,7 +55,7 @@ func mapLightBulb(corridor *Corridor, applianceStates []Appliances, applianceLoc
 func getApplianceLocation(floor *Floor, corridor *Corridor) CorridorLocation {
 	return CorridorLocation{
 		FloorNumber:    floor.GetLevel(),
-		CorridorType:   corridor.GetTypeAsString(),
+		CorridorType:   corridor.GetType(),
 		CorridorNumber: corridor.GetId(),
 	}
 }

@@ -14,8 +14,9 @@ func NewHotelBuilder() *HotelBuilder {
 
 func (hb *HotelBuilder) WithOneLightBulbAndOneACInEveryCorridor() *HotelBuilder {
 	for _, corridor := range hb.GetAllCorridors() {
-		corridor.AddAirConditioner(NewAirConditioner(1, AcPowerConsumptionUnit))
-		corridor.AddLightBulb(NewLightBulb(1, LightBulbPowerConsumptionUnit))
+		// Not sure about the req of appliance number, we can modify as per requirements
+		corridor.AddAirConditioner(NewAirConditioner(corridor.id, AcPowerConsumptionUnit))
+		corridor.AddLightBulb(NewLightBulb(corridor.id, LightBulbPowerConsumptionUnit))
 	}
 	return hb
 }
@@ -36,8 +37,8 @@ func (hb *HotelBuilder) WithFloors(noOfFloor int) *HotelBuilder {
 func (hb *HotelBuilder) WithCorridors(mainCorridorPerFloor int, subCorridorPerFloor int) *HotelBuilder {
 	for _, floor := range hb.GetFloors() {
 		floor.
-			AddCorridors(createCorridors(MAIN, mainCorridorPerFloor), MAIN).
-			AddCorridors(createCorridors(SUB, subCorridorPerFloor), SUB)
+			AddCorridors(createCorridors(MAIN, mainCorridorPerFloor)).
+			AddCorridors(createCorridors(SUB, subCorridorPerFloor))
 	}
 	return hb
 }

@@ -53,7 +53,7 @@ func (_m *HotelServiceI) GetAppliancesInfo() []service.AppliancesInfo {
 }
 
 // GetNumberOfCorridors provides a mock function with given fields: corridorType
-func (_m *HotelServiceI) GetNumberOfCorridors(corridorType model.CorridorType) int {
+func (_m *HotelServiceI) GetNumberOfCorridors(floorNumber int, corridorType model.CorridorType) int {
 	ret := _m.Called(corridorType)
 
 	var r0 int

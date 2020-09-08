@@ -1,6 +1,9 @@
 package service
 
-import . "HotelAutomation/model/appliances"
+import (
+	. "HotelAutomation/model"
+	. "HotelAutomation/model/appliances"
+)
 
 type Appliances struct {
 	Location  CorridorLocation
@@ -17,7 +20,7 @@ type AppliancesInfo struct {
 
 type CorridorLocation struct {
 	FloorNumber    int
-	CorridorType   string
+	CorridorType   CorridorType
 	CorridorNumber int
 }
 

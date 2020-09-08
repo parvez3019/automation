@@ -24,12 +24,14 @@ func (f *Floor) GetCorridors(cType CorridorType) []*Corridor {
 	return []*Corridor{}
 }
 
-func (f *Floor) AddCorridors(c []*Corridor, cType CorridorType) *Floor {
-	if cType == MAIN {
-		f.mainCorridors = append(f.mainCorridors, c...)
-	}
-	if cType == SUB {
-		f.subCorridors = append(f.subCorridors, c...)
+func (f *Floor) AddCorridors(corridors []*Corridor) *Floor {
+	for _, corridor := range corridors {
+		if corridor.GetType() == MAIN {
+			f.mainCorridors = append(f.mainCorridors, corridor)
+		}
+		if corridor.GetType() == SUB {
+			f.subCorridors = append(f.subCorridors, corridor)
+		}
 	}
 	return f
 }

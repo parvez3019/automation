@@ -29,7 +29,7 @@ func TestShouldReturnEmptyListOfApplianceInCaseOfNoFloors(t *testing.T) {
 
 func TestShouldReturnListOfApplianceFromMainCorridorOnlyInCaseOfNoSubCorridors(t *testing.T) {
 	floor := NewFloor(1).
-		AddCorridors([]*Corridor{mainCorridor}, MAIN)
+		AddCorridors([]*Corridor{mainCorridor})
 
 	expectedApplianceInfo := []AppliancesInfo{
 		{
@@ -48,7 +48,7 @@ func TestShouldReturnListOfApplianceFromMainCorridorOnlyInCaseOfNoSubCorridors(t
 
 func TestShouldReturnListOfApplianceFromSubCorridorOnlyInCaseOfNoMainCorridors(t *testing.T) {
 	floor := NewFloor(1).
-		AddCorridors([]*Corridor{subCorridor}, SUB)
+		AddCorridors([]*Corridor{subCorridor})
 
 	expectedApplianceInfo := []AppliancesInfo{
 		{
@@ -67,8 +67,8 @@ func TestShouldReturnListOfApplianceFromSubCorridorOnlyInCaseOfNoMainCorridors(t
 
 func TestShouldReturnListOfApplianceFromAllCorridor(t *testing.T) {
 	floor := NewFloor(1).
-		AddCorridors([]*Corridor{mainCorridor}, SUB).
-		AddCorridors([]*Corridor{subCorridor}, MAIN)
+		AddCorridors([]*Corridor{mainCorridor}).
+		AddCorridors([]*Corridor{subCorridor})
 
 	expectedApplianceInfo := []AppliancesInfo{
 		{
