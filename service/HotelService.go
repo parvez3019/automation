@@ -2,8 +2,6 @@ package service
 
 import (
 	. "HotelAutomation/model"
-	. "HotelAutomation/model/appliances"
-	"fmt"
 )
 
 type HotelService struct {
@@ -39,34 +37,4 @@ func (hotelService *HotelService) GetAppliances() []Appliances {
 
 func (hotelService *HotelService) GetNumberOfCorridors(floorNumber int, corridorType CorridorType) int {
 	return len(hotelService.hotel.GetCorridorsAtFloor(floorNumber, corridorType))
-}
-
-func (hotelService *HotelService) PrintHotelApplianceState() {
-	fmt.Println("-----------------------------")
-	for _, floor := range hotelService.hotel.GetFloors() {
-		fmt.Printf("Floor %d\n", floor.GetLevel())
-		printCorridor(floor, MAIN)
-		printCorridor(floor, SUB)
-	}
-	fmt.Println("-----------------------------")
-}
-
-func printCorridor(floor *Floor, corridorType CorridorType) {
-	for _, corridor := range floor.GetCorridors(corridorType) {
-		fmt.Printf("%s Corridor %d ", corridor.GetType(), corridor.GetId())
-		for _, bulb := range corridor.GetAppliances(LIGHT) {
-			fmt.Printf("Light %d : %s ", bulb.GetId(), toString(bulb.IsOn()))
-		}
-		for _, ac := range corridor.GetAppliances(AC) {
-			fmt.Printf("AC : %s", toString(ac.IsOn()))
-		}
-		fmt.Println()
-	}
-}
-
-func toString(on bool) string {
-	if on {
-		return "ON"
-	}
-	return "OFF"
 }

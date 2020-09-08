@@ -39,14 +39,6 @@ func (c *PowerAutomationController) Update(request MovementDetectedEvent) {
 	c.verifyAndToggleACBasedOnTotalPowerConsumption(request.Location)
 }
 
-func (c *PowerAutomationController) GetCurrentStateInfoOfApplianceWithLocation() []AppliancesInfo {
-	return c.hotelService.GetAppliancesInfo()
-}
-
-func (c *PowerAutomationController) toggleAppliance(request ToggleApplianceRequest) error {
-	return c.powerController.Update(request)
-}
-
 func (c *PowerAutomationController) verifyAndToggleACBasedOnTotalPowerConsumption(atLocation CorridorLocation) {
 	c.toggleSubCorridorAC(atLocation.FloorNumber, true)
 	if c.totalPowerConsumptionAtFloorExceeded(atLocation.FloorNumber) {
