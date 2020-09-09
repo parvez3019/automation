@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "HotelAutomation/IO"
+	. "HotelAutomation/parser"
 	. "HotelAutomation/runner"
 )
 

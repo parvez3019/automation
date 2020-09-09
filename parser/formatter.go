@@ -1,4 +1,4 @@
-package IO
+package parser
 
 import (
 	. "HotelAutomation/model"

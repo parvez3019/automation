@@ -1,7 +1,7 @@
 package runner
 
 import (
-	. "HotelAutomation/IO"
+	. "HotelAutomation/parser"
 	. "HotelAutomation/controller"
 	. "HotelAutomation/service"
 	"fmt"
@@ -34,7 +34,7 @@ func (app *Application) Run() {
 
 func takeInput(input chan string, reader Reader) {
 	for {
-		input <- reader.Read()
+		input <- reader.ReadLine()
 	}
 }
 
