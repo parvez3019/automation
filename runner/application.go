@@ -48,10 +48,14 @@ func raiseMotionDetectedEvent(hotelService *HotelService, controller *MotionCont
 				continue
 			}
 			controller.RaiseMotionDetectedEvent(movementDetectedEvent)
-			fmt.Println(f.ApplianceInfoToString(hotelService.GetAppliancesInfo()))
-			fmt.Println("--------------------")
+			printHotelState(f, hotelService)
 		}
 	}
+}
+
+func printHotelState(f *Formatter, hotelService *HotelService) {
+	fmt.Println(f.ApplianceInfoToString(hotelService.GetAppliancesInfo()))
+	fmt.Println("--------------------")
 }
 
 func getHotelConfig() CreateHotelRequest {
