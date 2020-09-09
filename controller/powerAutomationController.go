@@ -8,7 +8,7 @@ import (
 )
 
 type Subscriber interface {
-	Update(MovementDetectedEvent)
+	Update(MovementDetectedEvent) error
 }
 
 type PowerAutomationController struct {
@@ -30,13 +30,15 @@ func (c *PowerAutomationController) Init() {
 	c.powerController.RegisterDevices()
 }
 
-func (c *PowerAutomationController) Update(request MovementDetectedEvent) {
+func (c *PowerAutomationController) Update(request MovementDetectedEvent) error{
 	toggleLightBulbRequest := ToggleApplianceRequest{AppType: LIGHT, TurnOn: request.Movement, Location: request.Location}
 	err := c.powerController.Update(toggleLightBulbRequest)
 	if err != nil {
 		fmt.Println(err.Error())
+		return err
 	}
 	c.verifyAndToggleACBasedOnTotalPowerConsumption(request.Location)
+	return nil
 }
 
 func (c *PowerAutomationController) verifyAndToggleACBasedOnTotalPowerConsumption(atLocation CorridorLocation) {

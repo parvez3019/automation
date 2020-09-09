@@ -47,7 +47,10 @@ func raiseMotionDetectedEvent(hotelService *HotelService, controller *MotionCont
 				fmt.Println(err.Error())
 				continue
 			}
-			controller.RaiseMotionDetectedEvent(movementDetectedEvent)
+			err = controller.RaiseMotionDetectedEvent(movementDetectedEvent)
+			if err != nil {
+				fmt.Println(err.Error())
+			}
 			printHotelState(f, hotelService)
 		}
 	}
@@ -81,4 +84,3 @@ func setupHotelWithPowerAndMotionControllers(createHotelReq CreateHotelRequest) 
 
 	return motionController, hotelService
 }
-

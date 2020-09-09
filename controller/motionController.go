@@ -10,6 +10,6 @@ func NewMotionController() *MotionController {
 	return &MotionController{}
 }
 
-func (mc *MotionController) RaiseMotionDetectedEvent(request MovementDetectedEvent) {
-	mc.NotifyAll(request)
+func (mc *MotionController) RaiseMotionDetectedEvent(request MovementDetectedEvent) error{
+	return mc.NotifyAll(request)
 }
