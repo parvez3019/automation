@@ -5,6 +5,7 @@ import (
 	. "HotelAutomation/controller"
 	. "HotelAutomation/service"
 	"fmt"
+	"time"
 )
 
 type Application struct {
@@ -17,7 +18,7 @@ func NewApplication(reader Reader) *Application {
 
 func (app *Application) Run() {
 	hotelConfig := getHotelConfig()
-	motionController, hotelService := setupHotelWithPowerAndMotionControllers(hotelConfig)
+	motionController, hotelService, changeInApplianceState := setupHotelWithPowerAndMotionControllers(hotelConfig)
 	f := NewFormatter()
 
 	fmt.Println("Default state")
@@ -26,9 +27,19 @@ func (app *Application) Run() {
 
 	go takeInput(input, app.reader)
 	go raiseMotionDetectedEvent(hotelService, motionController, input, f)
+	go printCurrentStateOfHotel(hotelService, changeInApplianceState, f)
 
 	select {
 	//Run Infinitely
+	}
+}
+
+func printCurrentStateOfHotel(service *HotelService, change chan bool, f *Formatter) {
+	for {
+		select {
+		case <-change:
+			fmt.Println(f.ApplianceInfoToString(service.GetAppliancesInfo()))
+		}
 	}
 }
 
@@ -72,7 +83,7 @@ func getHotelConfig() CreateHotelRequest {
 	return CreateHotelRequest{NumberOfFloors: floor, MainCorridorPerFloor: mainCorridor, SubCorridorPerFloor: subCorridor}
 }
 
-func setupHotelWithPowerAndMotionControllers(createHotelReq CreateHotelRequest) (*MotionController, *HotelService) {
+func setupHotelWithPowerAndMotionControllers(createHotelReq CreateHotelRequest) (*MotionController, *HotelService, chan bool) {
 	hotelService := NewHotelService()
 	powerControllerService := NewPowerControllerService(hotelService)
 	powerAutomationController := NewPowerAutomationController(hotelService, powerControllerService)
@@ -80,7 +91,8 @@ func setupHotelWithPowerAndMotionControllers(createHotelReq CreateHotelRequest) 
 	motionController.AddSubscriber(powerAutomationController)
 
 	hotelService.CreateHotel(createHotelReq)
-	powerAutomationController.Init()
+	changeInApplianceState := make(chan bool)
+	powerAutomationController.Init(10*time.Second, changeInApplianceState)
 
-	return motionController, hotelService
+	return motionController, hotelService, changeInApplianceState
 }

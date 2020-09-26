@@ -1,13 +1,14 @@
 package controller
 
 import (
-	mock "HotelAutomation/_mocks"
+	mocks "HotelAutomation/_mocks"
 	. "HotelAutomation/model"
 	. "HotelAutomation/model/appliances"
 	. "HotelAutomation/service"
 	"errors"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
 func TestShouldCreateHotelAndRegisterDevicesInPowerController(t *testing.T) {
@@ -18,7 +19,7 @@ func TestShouldCreateHotelAndRegisterDevicesInPowerController(t *testing.T) {
 	mockPCService.On("RegisterDevices").Return()
 
 	mockHotelService.CreateHotel(request)
-	paController.Init()
+	paController.Init(10*time.Second, make(chan bool))
 
 	assert.Equal(t, 1, len(mockHotelService.Calls))
 	assert.Equal(t, 1, len(mockPCService.Calls))
@@ -102,9 +103,9 @@ func TestShouldTurnAcBackOnIfPowerConsumptionGoesLesserThanThreshold(t *testing.
 	assert.Len(t, motionController.subscribers, 1)
 }
 
-func setupMockServices() (*mock.HotelServiceI, *mock.PowerControllerServiceI, *MotionController, *PowerAutomationController) {
-	hotelService := &mock.HotelServiceI{}
-	powerControllerService := &mock.PowerControllerServiceI{}
+func setupMockServices() (*mocks.HotelServiceI, *mocks.PowerControllerServiceI, *MotionController, *PowerAutomationController) {
+	hotelService := &mocks.HotelServiceI{}
+	powerControllerService := &mocks.PowerControllerServiceI{}
 	paController := NewPowerAutomationController(hotelService, powerControllerService)
 	motionController := NewMotionController()
 	motionController.AddSubscriber(paController)

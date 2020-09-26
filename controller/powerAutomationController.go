@@ -4,7 +4,9 @@ import (
 	. "HotelAutomation/model"
 	. "HotelAutomation/model/appliances"
 	. "HotelAutomation/service"
+	"context"
 	"fmt"
+	"time"
 )
 
 type Subscriber interface {
@@ -12,31 +14,47 @@ type Subscriber interface {
 }
 
 type PowerAutomationController struct {
-	hotelService    HotelServiceI
-	powerController PowerControllerServiceI
+	hotelService                 HotelServiceI
+	powerController              PowerControllerServiceI
+	noMotionTimeout              time.Duration
+	ctx                          context.Context
+	addMotionDetectedChannel     chan CorridorLocation
+	motionDetectedTimeoutChannel chan CorridorLocation
+	motionEnabledAppliance       map[CorridorLocation]int
+	changeInApplianceState       chan bool
 }
 
 func NewPowerAutomationController(
 	hService HotelServiceI,
 	pController PowerControllerServiceI,
+
 ) *PowerAutomationController {
 	return &PowerAutomationController{
-		hotelService:    hService,
-		powerController: pController,
+		hotelService:                 hService,
+		powerController:              pController,
+		motionEnabledAppliance:       make(map[CorridorLocation]int),
+		ctx:                          context.Background(),
+		addMotionDetectedChannel:     make(chan CorridorLocation),
+		motionDetectedTimeoutChannel: make(chan CorridorLocation),
+		changeInApplianceState:       make(chan bool),
 	}
 }
 
-func (c *PowerAutomationController) Init() {
+func (c *PowerAutomationController) Init(timeout time.Duration, changeInApplianceState chan bool) {
 	c.powerController.RegisterDevices()
+	c.noMotionTimeout = timeout
+	c.changeInApplianceState = changeInApplianceState
 }
 
-func (c *PowerAutomationController) Update(request MovementDetectedEvent) error{
+func (c *PowerAutomationController) Update(request MovementDetectedEvent) error {
 	toggleLightBulbRequest := ToggleApplianceRequest{AppType: LIGHT, TurnOn: request.Movement, Location: request.Location}
 	err := c.powerController.Update(toggleLightBulbRequest)
 	if err != nil {
 		fmt.Println(err.Error())
 		return err
 	}
+	go c.lookup()
+	go c.addToMotionEnabledAppliance(request.Location)
 	c.verifyAndToggleACBasedOnTotalPowerConsumption(request.Location)
 	return nil
 }
@@ -45,7 +63,6 @@ func (c *PowerAutomationController) verifyAndToggleACBasedOnTotalPowerConsumptio
 	c.toggleSubCorridorAC(atLocation.FloorNumber, true)
 	if c.totalPowerConsumptionAtFloorExceeded(atLocation.FloorNumber) {
 		c.toggleSubCorridorAC(atLocation.FloorNumber, false)
-		return
 	}
 }
 
@@ -61,6 +78,36 @@ func (c *PowerAutomationController) totalPowerConsumptionAtFloorExceeded(floorNu
 
 func (c *PowerAutomationController) toggleSubCorridorAC(floor int, switchOn bool) {
 	c.powerController.ToggleApplianceToReverseState(floor, SUB, AC, switchOn)
+}
+
+func (c *PowerAutomationController) addToMotionEnabledAppliance(location CorridorLocation) {
+	c.addMotionDetectedChannel <- location
+	cxt, _ := context.WithTimeout(c.ctx, c.noMotionTimeout)
+	select {
+	case <-cxt.Done():
+		c.motionDetectedTimeoutChannel <- location
+	}
+}
+
+func (c *PowerAutomationController) lookup() {
+	for {
+		select {
+		case location := <-c.addMotionDetectedChannel:
+			c.motionEnabledAppliance[location] = c.motionEnabledAppliance[location] + 1
+		case location := <-c.motionDetectedTimeoutChannel:
+			c.motionEnabledAppliance[location] = c.motionEnabledAppliance[location] - 1
+			c.turnOffLight(location)
+		}
+	}
+}
+
+func (c *PowerAutomationController) turnOffLight(location CorridorLocation) {
+	if c.motionEnabledAppliance[location] == 0 {
+		toggleLightBulbRequest := ToggleApplianceRequest{AppType: LIGHT, TurnOn: false, Location: location}
+		_ = c.powerController.Update(toggleLightBulbRequest)
+		c.verifyAndToggleACBasedOnTotalPowerConsumption(location)
+		c.changeInApplianceState <- true
+	}
 }
 
 const (
