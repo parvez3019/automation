@@ -47,15 +47,23 @@ func (c *PowerAutomationController) Init(timeout time.Duration, changeInApplianc
 }
 
 func (c *PowerAutomationController) Update(request MovementDetectedEvent) error {
-	toggleLightBulbRequest := ToggleApplianceRequest{AppType: LIGHT, TurnOn: request.Movement, Location: request.Location}
+	err := c.toggleLight(request.Movement, request.Location)
+	if err != nil {
+		return err
+	}
+	go c.lookup()
+	go c.addToMotionEnabledAppliance(request.Location)
+	return nil
+}
+
+func (c *PowerAutomationController) toggleLight(toggle bool, location CorridorLocation) error {
+	toggleLightBulbRequest := ToggleApplianceRequest{AppType: LIGHT, TurnOn: toggle, Location: location}
 	err := c.powerController.Update(toggleLightBulbRequest)
 	if err != nil {
 		fmt.Println(err.Error())
 		return err
 	}
-	go c.lookup()
-	go c.addToMotionEnabledAppliance(request.Location)
-	c.verifyAndToggleACBasedOnTotalPowerConsumption(request.Location)
+	c.verifyAndToggleACBasedOnTotalPowerConsumption(location)
 	return nil
 }
 
@@ -103,9 +111,7 @@ func (c *PowerAutomationController) lookup() {
 
 func (c *PowerAutomationController) turnOffLight(location CorridorLocation) {
 	if c.motionEnabledAppliance[location] == 0 {
-		toggleLightBulbRequest := ToggleApplianceRequest{AppType: LIGHT, TurnOn: false, Location: location}
-		_ = c.powerController.Update(toggleLightBulbRequest)
-		c.verifyAndToggleACBasedOnTotalPowerConsumption(location)
+		_ = c.toggleLight(false, location)
 		c.changeInApplianceState <- true
 	}
 }
